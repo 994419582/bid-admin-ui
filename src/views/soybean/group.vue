@@ -1,0 +1,297 @@
+<template>
+  <basic-container>
+    <avue-crud :option="option"
+               :table-loading="loading"
+               :data="data"
+               :page="page"
+               :permission="permissionList"
+               :before-open="beforeOpen"
+               v-model="form"
+               ref="crud"
+               @row-update="rowUpdate"
+               @row-save="rowSave"
+               @row-del="rowDel"
+               @search-change="searchChange"
+               @search-reset="searchReset"
+               @selection-change="selectionChange"
+               @current-change="currentChange"
+               @size-change="sizeChange"
+               @on-load="onLoad">
+      <template slot="menuLeft">
+        <el-button type="danger"
+                   size="small"
+                   icon="el-icon-delete"
+                   plain
+                   v-if="permission.group_delete"
+                   @click="handleDelete">删 除
+        </el-button>
+      </template>
+    </avue-crud>
+  </basic-container>
+</template>
+
+<script>
+  import {getList, getDetail, add, update, remove} from "@/api/soybean/group";
+  import {mapGetters} from "vuex";
+
+  export default {
+    data() {
+      return {
+        form: {},
+        query: {},
+        loading: true,
+        page: {
+          pageSize: 10,
+          currentPage: 1,
+          total: 0
+        },
+        selectionList: [],
+        option: {
+          tip: false,
+          border: true,
+          index: true,
+          viewBtn: true,
+          selection: true,
+          column: [
+            {
+              label: "主键",
+              prop: "id",
+              rules: [{
+                required: true,
+                message: "请输入主键",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "群组名",
+              prop: "name",
+              rules: [{
+                required: true,
+                message: "请输入群组名",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "群组名全称",
+              prop: "fullName",
+              rules: [{
+                required: true,
+                message: "请输入群组名全称",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "备注",
+              prop: "remarks",
+              rules: [{
+                required: true,
+                message: "请输入备注",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "群logo",
+              prop: "logo",
+              rules: [{
+                required: true,
+                message: "请输入群logo",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "群人数",
+              prop: "userAccount",
+              rules: [{
+                required: true,
+                message: "请输入群人数",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "群管理员",
+              prop: "managers",
+              rules: [{
+                required: true,
+                message: "请输入群管理员",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "是否需要审批(0:否，1:是)",
+              prop: "approval",
+              rules: [{
+                required: true,
+                message: "请输入是否需要审批(0:否，1:是)",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "群组类型（公司，社区，其他）",
+              prop: "groupType",
+              rules: [{
+                required: true,
+                message: "请输入群组类型（公司，社区，其他）",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "公司地址ID（只有公司和社区需要）",
+              prop: "addressId",
+              rules: [{
+                required: true,
+                message: "请输入公司地址ID（只有公司和社区需要）",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "公司地址名称",
+              prop: "addressName",
+              rules: [{
+                required: true,
+                message: "请输入公司地址名称",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "详细地址",
+              prop: "detailAddress",
+              rules: [{
+                required: true,
+                message: "请输入详细地址",
+                trigger: "blur"
+              }]
+            },
+          ]
+        },
+        data: []
+      };
+    },
+    computed: {
+      ...mapGetters(["permission"]),
+      permissionList() {
+        return {
+          addBtn: this.vaildData(this.permission.group_add, false),
+          viewBtn: this.vaildData(this.permission.group_view, false),
+          delBtn: this.vaildData(this.permission.group_delete, false),
+          editBtn: this.vaildData(this.permission.group_edit, false)
+        };
+      },
+      ids() {
+        let ids = [];
+        this.selectionList.forEach(ele => {
+          ids.push(ele.id);
+        });
+        return ids.join(",");
+      }
+    },
+    methods: {
+      rowSave(row, loading, done) {
+        add(row).then(() => {
+          loading();
+          this.onLoad(this.page);
+          this.$message({
+            type: "success",
+            message: "操作成功!"
+          });
+        }, error => {
+          done();
+          console.log(error);
+        });
+      },
+      rowUpdate(row, index, loading, done) {
+        update(row).then(() => {
+          loading();
+          this.onLoad(this.page);
+          this.$message({
+            type: "success",
+            message: "操作成功!"
+          });
+        }, error => {
+          done();
+          console.log(error);
+        });
+      },
+      rowDel(row) {
+        this.$confirm("确定将选择数据删除?", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            return remove(row.id);
+          })
+          .then(() => {
+            this.onLoad(this.page);
+            this.$message({
+              type: "success",
+              message: "操作成功!"
+            });
+          });
+      },
+      handleDelete() {
+        if (this.selectionList.length === 0) {
+          this.$message.warning("请选择至少一条数据");
+          return;
+        }
+        this.$confirm("确定将选择数据删除?", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            return remove(this.ids);
+          })
+          .then(() => {
+            this.onLoad(this.page);
+            this.$message({
+              type: "success",
+              message: "操作成功!"
+            });
+            this.$refs.crud.toggleSelection();
+          });
+      },
+      beforeOpen(done, type) {
+        if (["edit", "view"].includes(type)) {
+          getDetail(this.form.id).then(res => {
+            this.form = res.data.data;
+          });
+        }
+        done();
+      },
+      searchReset() {
+        this.query = {};
+        this.onLoad(this.page);
+      },
+      searchChange(params) {
+        this.query = params;
+        this.onLoad(this.page, params);
+      },
+      selectionChange(list) {
+        this.selectionList = list;
+      },
+      selectionClear() {
+        this.selectionList = [];
+        this.$refs.crud.toggleSelection();
+      },
+      currentChange(currentPage){
+        this.page.currentPage = currentPage;
+      },
+      sizeChange(pageSize){
+        this.page.pageSize = pageSize;
+      },
+      onLoad(page, params = {}) {
+        this.loading = true;
+        getList(page.currentPage, page.pageSize, Object.assign(params, this.query)).then(res => {
+          const data = res.data.data;
+          this.page.total = data.total;
+          this.data = data.records;
+          this.loading = false;
+          this.selectionClear();
+        });
+      }
+    }
+  };
+</script>
+
+<style>
+</style>
