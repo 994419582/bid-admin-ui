@@ -53,15 +53,19 @@
           viewBtn: true,
           selection: true,
           column: [
-            {
-              label: "主键",
-              prop: "id",
-              rules: [{
-                required: true,
-                message: "请输入主键",
-                trigger: "blur"
-              }]
-            },
+            // {
+            //   label: "主键",
+            //   prop: "id",
+            //   hide: true,
+            //   addDisplay: false,
+            //   editDisplay: false,
+            //   viewDisplay: false,
+            //   rules: [{
+            //     required: true,
+            //     message: "请输入主键",
+            //     trigger: "blur"
+            //   }]
+            // },
             {
               label: "群组名",
               prop: "name",
@@ -81,19 +85,10 @@
               }]
             },
             {
-              label: "备注",
-              prop: "remarks",
-              rules: [{
-                required: true,
-                message: "请输入备注",
-                trigger: "blur"
-              }]
-            },
-            {
               label: "群logo",
               prop: "logo",
               rules: [{
-                required: true,
+                required: false,
                 message: "请输入群logo",
                 trigger: "blur"
               }]
@@ -111,34 +106,70 @@
               label: "群管理员",
               prop: "managers",
               rules: [{
-                required: true,
+                required: false,
                 message: "请输入群管理员",
                 trigger: "blur"
               }]
             },
+           {
+              label: "群创建人",
+              prop: "createUser",
+              rules: [{
+                required: true,
+                message: "请输入群创建人",
+                trigger: "blur"
+              }]
+            },
+           {
+              label: "群状态",
+              prop: "status",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=status",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: true,
+                message: "请输入状态",
+                trigger: "blur"
+              }]
+            },
             {
-              label: "是否需要审批(0:否，1:是)",
+              label: "是否需要审批",
               prop: "approval",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=approval",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
-                message: "请输入是否需要审批(0:否，1:是)",
+                message: "请输入是否需要审批",
                 trigger: "blur"
               }]
             },
             {
-              label: "群组类型（公司，社区，其他）",
+              label: "群组类型",
               prop: "groupType",
+              type: 'select',
+              dicUrl: "/api/bid-system/dict/dictionary?code=group_type",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
-                message: "请输入群组类型（公司，社区，其他）",
+                message: "请输入群组类型",
                 trigger: "blur"
               }]
             },
             {
-              label: "公司地址ID（只有公司和社区需要）",
+              label: "公司地址ID",
               prop: "addressId",
               rules: [{
-                required: true,
+                required: false,
                 message: "请输入公司地址ID（只有公司和社区需要）",
                 trigger: "blur"
               }]
@@ -147,7 +178,7 @@
               label: "公司地址名称",
               prop: "addressName",
               rules: [{
-                required: true,
+                required: false,
                 message: "请输入公司地址名称",
                 trigger: "blur"
               }]
@@ -156,8 +187,20 @@
               label: "详细地址",
               prop: "detailAddress",
               rules: [{
-                required: true,
+                required: false,
                 message: "请输入详细地址",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "备注",
+              prop: "remarks",
+              span: 24,
+              minRows: 3,
+              type: "textarea",
+              rules: [{
+                required: true,
+                message: "请输入备注",
                 trigger: "blur"
               }]
             },
