@@ -53,21 +53,8 @@
           viewBtn: true,
           selection: true,
           column: [
-            // {
-            //   label: "主键",
-            //   prop: "id",
-            //   hide: true,
-            //   addDisplay: false,
-            //   editDisplay: false,
-            //   viewDisplay: false,
-            //   rules: [{
-            //     required: true,
-            //     message: "请输入主键",
-            //     trigger: "blur"
-            //   }]
-            // },
             {
-              label: "群组名",
+              label: "群组名称",
               prop: "name",
               rules: [{
                 required: true,
@@ -76,7 +63,7 @@
               }]
             },
             {
-              label: "群组名全称",
+              label: "群组全称",
               prop: "fullName",
               rules: [{
                 required: true,
@@ -85,7 +72,7 @@
               }]
             },
             {
-              label: "群logo",
+              label: "群Logo",
               prop: "logo",
               rules: [{
                 required: false,
@@ -105,6 +92,13 @@
             {
               label: "群管理员",
               prop: "managers",
+              type: 'select',
+              multiple: true,
+              dicUrl: "/api/bid-soybean/user/select",
+              props: {
+                label: "name",
+                value: "id"
+              },
               rules: [{
                 required: false,
                 message: "请输入群管理员",
@@ -114,13 +108,34 @@
            {
               label: "群创建人",
               prop: "createUser",
+              type: 'select',
+              dicUrl: "/api/bid-soybean/user/select",
+              props: {
+                label: "name",
+                value: "id"
+              },
               rules: [{
-                required: true,
+                required: false,
                 message: "请输入群创建人",
                 trigger: "blur"
               }]
             },
-           {
+            {
+              label: "父群组",
+              prop: "parentGroup",
+              type: 'tree',
+              dicUrl: "/api/bid-soybean/group/select",
+              props: {
+                label: "name",
+                value: "id"
+              },
+              rules: [{
+                required: false,
+                message: "请输入父群组",
+                trigger: "blur"
+              }]
+            },
+            {
               label: "群状态",
               prop: "status",
               type: 'radio',
@@ -136,7 +151,7 @@
               }]
             },
             {
-              label: "是否需要审批",
+              label: "需要审批",
               prop: "approval",
               type: 'radio',
               dicUrl: "/api/bid-system/dict/dictionary?code=approval",
@@ -165,33 +180,33 @@
                 trigger: "blur"
               }]
             },
-            {
-              label: "公司地址ID",
-              prop: "addressId",
-              rules: [{
-                required: false,
-                message: "请输入公司地址ID（只有公司和社区需要）",
-                trigger: "blur"
-              }]
-            },
-            {
-              label: "公司地址名称",
-              prop: "addressName",
-              rules: [{
-                required: false,
-                message: "请输入公司地址名称",
-                trigger: "blur"
-              }]
-            },
-            {
-              label: "详细地址",
-              prop: "detailAddress",
-              rules: [{
-                required: false,
-                message: "请输入详细地址",
-                trigger: "blur"
-              }]
-            },
+            // {
+            //   label: "公司地址ID",
+            //   prop: "addressId",
+            //   rules: [{
+            //     required: false,
+            //     message: "请输入公司地址ID（只有公司和社区需要）",
+            //     trigger: "blur"
+            //   }]
+            // },
+            // {
+            //   label: "公司地址",
+            //   prop: "addressName",
+            //   rules: [{
+            //     required: false,
+            //     message: "请输入公司地址名称",
+            //     trigger: "blur"
+            //   }]
+            // },
+            // {
+            //   label: "详细地址",
+            //   prop: "detailAddress",
+            //   rules: [{
+            //     required: false,
+            //     message: "请输入详细地址",
+            //     trigger: "blur"
+            //   }]
+            // },
             {
               label: "备注",
               prop: "remarks",
@@ -199,7 +214,7 @@
               minRows: 3,
               type: "textarea",
               rules: [{
-                required: true,
+                required: false,
                 message: "请输入备注",
                 trigger: "blur"
               }]

@@ -33,6 +33,7 @@ export const remove = (ids) => {
 }
 
 export const add = (row) => {
+  row = {...row, managers: row.managers.join(',')}
   return request({
     url: '/api/bid-soybean/group/submit',
     method: 'post',
@@ -41,6 +42,7 @@ export const add = (row) => {
 }
 
 export const update = (row) => {
+  row = {...row, managers: row.managers.join(',')}
   return request({
     url: '/api/bid-soybean/group/submit',
     method: 'post',
