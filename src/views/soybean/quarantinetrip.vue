@@ -56,6 +56,10 @@
             {
               label: "主键",
               prop: "id",
+              hide: true,
+              addDisplay: false,
+              editDisplay: false,
+              viewDisplay: false,
               rules: [{
                 required: true,
                 message: "请输入",
@@ -63,8 +67,14 @@
               }]
             },
             {
-              label: "用户主键",
+              label: "用户",
               prop: "userId",
+              type: 'select',
+              dicUrl: "/api/bid-soybean/user/select",
+              props: {
+                label: "name",
+                value: "id"
+              },
               rules: [{
                 required: true,
                 message: "请输入",
@@ -74,6 +84,12 @@
             {
               label: "隔离",
               prop: "quarantineId",
+              type: 'select',
+              dicUrl: "/api/bid-soybean/quarantine/select",
+              props: {
+                label: "startTime",
+                value: "id"
+              },
               rules: [{
                 required: true,
                 message: "请输入隔离",
@@ -83,6 +99,7 @@
             {
               label: "返程出发日期",
               prop: "gobackAddress",
+              type: 'datetime',
               rules: [{
                 required: true,
                 message: "请输入返程出发日期",
@@ -92,6 +109,7 @@
             {
               label: "返程时间",
               prop: "gobackTime",
+              type: 'datetime',
               rules: [{
                 required: true,
                 message: "请输入返程时间",
@@ -101,6 +119,12 @@
             {
               label: "交通方式",
               prop: "transport",
+              type: 'select',
+              dicUrl: "/api/bid-system/dict/dictionary?code=transport",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
                 message: "请输入交通方式",
@@ -120,7 +144,7 @@
               label: "备注",
               prop: "remarks",
               rules: [{
-                required: true,
+                required: false,
                 message: "请输入备注",
                 trigger: "blur"
               }]

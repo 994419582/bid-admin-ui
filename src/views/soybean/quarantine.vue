@@ -56,6 +56,10 @@
             {
               label: "主键",
               prop: "id",
+              hide: true,
+              addDisplay: false,
+              editDisplay: false,
+              viewDisplay: false,
               rules: [{
                 required: true,
                 message: "请输入",
@@ -63,8 +67,14 @@
               }]
             },
             {
-              label: "用户主键",
+              label: "用户",
               prop: "userId",
+              type: 'select',
+              dicUrl: "/api/bid-soybean/user/select",
+              props: {
+                label: "name",
+                value: "id"
+              },
               rules: [{
                 required: true,
                 message: "请输入",
@@ -72,8 +82,14 @@
               }]
             },
             {
-              label: "是否从其他城市返回",
+              label: "是否返回",
               prop: "otherCity",
+              type: 'select',
+              dicUrl: "/api/bid-system/dict/dictionary?code=back",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
                 message: "请输入是否从其他城市返回",
@@ -81,8 +97,9 @@
               }]
             },
             {
-              label: "开始观察时间",
+              label: "隔离开始时间",
               prop: "startTime",
+              type: 'datetime',
               rules: [{
                 required: true,
                 message: "请输入开始观察时间",
@@ -110,6 +127,12 @@
             {
               label: "发热",
               prop: "fever",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=fever",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
                 message: "请输入发热",
@@ -119,6 +142,12 @@
             {
               label: "乏力",
               prop: "fatigue",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=fatigue",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
                 message: "请输入乏力",
@@ -128,6 +157,12 @@
             {
               label: "干咳",
               prop: "hoose",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=hoose",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
                 message: "请输入干咳",
@@ -137,6 +172,12 @@
             {
               label: "呼吸困难",
               prop: "dyspnea",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=dyspnea",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
                 message: "请输入呼吸困难",
@@ -146,6 +187,12 @@
             {
               label: "腹泻",
               prop: "diarrhea",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=diarrhea",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
                 message: "请输入腹泻",
@@ -155,6 +202,12 @@
             {
               label: "肌肉酸疼",
               prop: "muscle",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=muscle",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
                 message: "请输入肌肉酸疼",
@@ -164,8 +217,9 @@
             {
               label: "其他不适症状",
               prop: "other",
+              type: "textarea",
               rules: [{
-                required: true,
+                required: false,
                 message: "请输入其他不适症状",
                 trigger: "blur"
               }]
@@ -173,8 +227,9 @@
             {
               label: "备注",
               prop: "remarks",
+              type: "textarea",
               rules: [{
-                required: true,
+                required: false,
                 message: "请输入备注",
                 trigger: "blur"
               }]

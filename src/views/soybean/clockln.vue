@@ -56,6 +56,10 @@
             {
               label: "主键",
               prop: "id",
+              hide: true,
+              addDisplay: false,
+              editDisplay: false,
+              viewDisplay: false,
               rules: [{
                 required: true,
                 message: "请输入主键",
@@ -63,11 +67,17 @@
               }]
             },
             {
-              label: "用户主键",
+              label: "用户",
               prop: "userId",
+              type: 'select',
+              dicUrl: "/api/bid-soybean/user/select",
+              props: {
+                label: "name",
+                value: "id"
+              },
               rules: [{
                 required: true,
-                message: "请输入用户主键",
+                message: "请输入用户",
                 trigger: "blur"
               }]
             },
@@ -83,6 +93,12 @@
             {
               label: "健康状态",
               prop: "healthy",
+              type: 'select',
+              dicUrl: "/api/bid-system/dict/dictionary?code=healthy",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
                 message: "请输入健康状态",
@@ -92,6 +108,12 @@
             {
               label: "是否有就诊入院",
               prop: "hospital",
+              type: 'select',
+              dicUrl: "/api/bid-system/dict/dictionary?code=hospital",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
                 message: "请输入是否有就诊入院",
@@ -101,6 +123,12 @@
             {
               label: "是否接触过武汉人同或经过武汉",
               prop: "wuhan",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=wuhan",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
                 message: "请输入是否接触过武汉人同或经过武汉",
@@ -110,6 +138,7 @@
             {
               label: "计划反京时间",
               prop: "gobacktime",
+              type: 'datetime',
               rules: [{
                 required: true,
                 message: "请输入计划反京时间",
@@ -117,17 +146,14 @@
               }]
             },
             {
-              label: "备注",
-              prop: "remarks",
-              rules: [{
-                required: true,
-                message: "请输入备注",
-                trigger: "blur"
-              }]
-            },
-            {
               label: "是否在隔离期",
               prop: "quarantine",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=quarantine",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
                 message: "请输入是否在隔离器",
@@ -140,6 +166,16 @@
               rules: [{
                 required: true,
                 message: "请输入未返京原因",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "备注",
+              prop: "remarks",
+              type: "textarea",
+              rules: [{
+                required: false,
+                message: "请输入备注",
                 trigger: "blur"
               }]
             },
