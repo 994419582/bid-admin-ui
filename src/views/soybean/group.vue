@@ -56,6 +56,7 @@
             {
               label: "群组名称",
               prop: "name",
+              width: 200,
               rules: [{
                 required: true,
                 message: "请输入群组名",
@@ -65,6 +66,7 @@
             {
               label: "群组全称",
               prop: "fullName",
+              width: 300,
               rules: [{
                 required: true,
                 message: "请输入群组名全称",
@@ -72,7 +74,7 @@
               }]
             },
             {
-              label: "群Logo",
+              label: "群组Logo",
               prop: "logo",
               rules: [{
                 required: false,
@@ -81,7 +83,7 @@
               }]
             },
             {
-              label: "群人数",
+              label: "群组人数",
               prop: "userAccount",
               rules: [{
                 required: true,
@@ -94,6 +96,7 @@
               prop: "managers",
               type: 'select',
               multiple: true,
+              dataType: "string",
               dicUrl: "/api/bid-soybean/user/select",
               props: {
                 label: "name",
@@ -102,21 +105,6 @@
               rules: [{
                 required: false,
                 message: "请输入群管理员",
-                trigger: "blur"
-              }]
-            },
-           {
-              label: "群创建人",
-              prop: "createUser",
-              type: 'select',
-              dicUrl: "/api/bid-soybean/user/select",
-              props: {
-                label: "name",
-                value: "id"
-              },
-              rules: [{
-                required: false,
-                message: "请输入群创建人",
                 trigger: "blur"
               }]
             },
@@ -132,6 +120,64 @@
               rules: [{
                 required: false,
                 message: "请输入父群组",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "群创建人",
+              prop: "createUser",
+              type: 'select',
+              dicUrl: "/api/bid-soybean/user/select",
+              props: {
+                label: "name",
+                value: "id"
+              },
+              rules: [{
+                required: false,
+                message: "请输入群创建人",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "群更新人",
+              prop: "updateUser",
+              type: 'select',
+              dicUrl: "/api/bid-soybean/user/select",
+              props: {
+                label: "name",
+                value: "id"
+              },
+              rules: [{
+                required: false,
+                message: "请输入群创建人",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "创建日期",
+              prop: "createTime",
+              width: 100,
+              type: 'datetime',
+              disabled: true,
+              format: "yyyy-MM-dd",
+              valueFormat: "datetime",
+              rules: [{
+                required: false,
+                message: "请输入创建日期",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "更新日期",
+              prop: "updateTime",
+              width: 100,
+              type: 'datetime',
+              disabled: true,
+              format: "yyyy-MM-dd",
+              valueFormat: "datetime",
+              rules: [{
+                required: false,
+                message: "请输入更新日期",
                 trigger: "blur"
               }]
             },
@@ -169,6 +215,7 @@
               label: "群组类型",
               prop: "groupType",
               type: 'select',
+              span: 24,
               dicUrl: "/api/bid-system/dict/dictionary?code=group_type",
               props: {
                 label: "dictValue",
