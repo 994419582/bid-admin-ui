@@ -97,9 +97,10 @@
               }]
             },
             {
-              label: "隔离开始时间",
+              label: "隔离开始",
               prop: "startTime",
-              type: 'datetime',
+              type: 'date',
+              format: "yyyy-MM-dd",
               rules: [{
                 required: true,
                 message: "请输入开始观察时间",
@@ -233,6 +234,14 @@
                 message: "请输入备注",
                 trigger: "blur"
               }]
+            },
+            {
+              label: "打卡时间",
+              prop: "createTime",
+              format: "yyyy-MM-dd hh:mm:ss",
+              addDisplay: false,
+              editDisplay: false,
+              viewDisplay: false
             },
           ]
         },

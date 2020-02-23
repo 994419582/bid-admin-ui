@@ -106,7 +106,7 @@
               }]
             },
             {
-              label: "是否有就诊入院",
+              label: "是否入院",
               prop: "hospital",
               type: 'select',
               dicUrl: "/api/bid-system/dict/dictionary?code=hospital",
@@ -121,7 +121,7 @@
               }]
             },
             {
-              label: "是否接触过武汉人同或经过武汉",
+              label: "是否武汉",
               prop: "wuhan",
               type: 'radio',
               dicUrl: "/api/bid-system/dict/dictionary?code=wuhan",
@@ -136,9 +136,10 @@
               }]
             },
             {
-              label: "计划反京时间",
+              label: "反京时间",
               prop: "gobacktime",
-              type: 'datetime',
+              type: "datetime",
+              format: "yyyy-MM-dd",
               rules: [{
                 required: true,
                 message: "请输入计划反京时间",
@@ -146,7 +147,7 @@
               }]
             },
             {
-              label: "是否在隔离期",
+              label: "是否隔离",
               prop: "quarantine",
               type: 'radio',
               dicUrl: "/api/bid-system/dict/dictionary?code=quarantine",
@@ -161,10 +162,10 @@
               }]
             },
             {
-              label: "未返京原因",
+              label: "未返原因",
               prop: "reason",
               rules: [{
-                required: true,
+                required: false,
                 message: "请输入未返京原因",
                 trigger: "blur"
               }]
@@ -178,6 +179,14 @@
                 message: "请输入备注",
                 trigger: "blur"
               }]
+            },
+            {
+              label: "打卡时间",
+              prop: "createTime",
+              format: "yyyy-MM-dd hh:mm:ss",
+              addDisplay: false,
+              editDisplay: false,
+              viewDisplay: false
             },
           ]
         },

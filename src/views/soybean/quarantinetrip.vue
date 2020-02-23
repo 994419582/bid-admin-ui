@@ -82,13 +82,13 @@
               }]
             },
             {
-              label: "隔离",
+              label: "隔离开始时间",
               prop: "quarantineId",
               type: 'select',
               dicUrl: "/api/bid-soybean/quarantine/select",
               props: {
-                label: "startTime",
-                value: "id"
+                label: "startTimeString",
+                value: "id",
               },
               rules: [{
                 required: true,
@@ -99,7 +99,8 @@
             {
               label: "返程出发日期",
               prop: "gobackAddress",
-              type: 'datetime',
+              type: 'date',
+              format: "yyyy-MM-dd",
               rules: [{
                 required: true,
                 message: "请输入返程出发日期",
@@ -109,7 +110,8 @@
             {
               label: "返程时间",
               prop: "gobackTime",
-              type: 'datetime',
+              type: 'date',
+              format: "yyyy-MM-dd",
               rules: [{
                 required: true,
                 message: "请输入返程时间",
@@ -143,11 +145,20 @@
             {
               label: "备注",
               prop: "remarks",
+              type: "textarea",
               rules: [{
                 required: false,
                 message: "请输入备注",
                 trigger: "blur"
               }]
+            },
+            {
+              label: "打卡时间",
+              prop: "createTime",
+              format: "yyyy-MM-dd hh:mm:ss",
+              addDisplay: false,
+              editDisplay: false,
+              viewDisplay: false
             },
           ]
         },
