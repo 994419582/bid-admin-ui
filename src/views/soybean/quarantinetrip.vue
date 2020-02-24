@@ -75,6 +75,7 @@
                 label: "name",
                 value: "id"
               },
+              cascaderItem: ['quarantineId'],
               rules: [{
                 required: true,
                 message: "请输入",
@@ -85,7 +86,7 @@
               label: "隔离开始时间",
               prop: "quarantineId",
               type: 'select',
-              dicUrl: "/api/bid-soybean/quarantine/select",
+              dicUrl: "/api/bid-soybean/quarantine/select?userId={{key}}",
               props: {
                 label: "startTimeString",
                 value: "id",
@@ -101,6 +102,11 @@
               prop: "gobackAddress",
               type: 'date',
               format: "yyyy-MM-dd",
+              pickerOptions: {
+                disabledDate(time) {
+                  return time.getTime() > Date.now();
+                }
+              },
               rules: [{
                 required: true,
                 message: "请输入返程出发日期",
@@ -112,6 +118,11 @@
               prop: "gobackTime",
               type: 'date',
               format: "yyyy-MM-dd",
+              pickerOptions: {
+                disabledDate(time) {
+                  return time.getTime() > Date.now();
+                }
+              },
               rules: [{
                 required: true,
                 message: "请输入返程时间",
@@ -137,8 +148,8 @@
               label: "航班/车次",
               prop: "flight",
               rules: [{
-                required: true,
-                message: "请输入航班/车次",
+                required: false,
+                message: "请输入航班/车次/车牌号",
                 trigger: "blur"
               }]
             },
@@ -241,6 +252,7 @@
             return remove(this.ids);
           })
           .then(() => {
+            this.page.currentPage--;
             this.onLoad(this.page);
             this.$message({
               type: "success",

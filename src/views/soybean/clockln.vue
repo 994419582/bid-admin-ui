@@ -77,13 +77,14 @@
               },
               rules: [{
                 required: true,
-                message: "请输入用户",
+                message: "请选择用户",
                 trigger: "blur"
               }]
             },
             {
               label: "打卡地址",
               prop: "address",
+              type: "textarea",
               rules: [{
                 required: true,
                 message: "请输入打卡地址",
@@ -101,7 +102,7 @@
               },
               rules: [{
                 required: true,
-                message: "请输入健康状态",
+                message: "请选择健康状态",
                 trigger: "blur"
               }]
             },
@@ -116,7 +117,7 @@
               },
               rules: [{
                 required: true,
-                message: "请输入是否有就诊入院",
+                message: "请选择是否有就诊入院",
                 trigger: "blur"
               }]
             },
@@ -131,18 +132,18 @@
               },
               rules: [{
                 required: true,
-                message: "请输入是否接触过武汉人同或经过武汉",
+                message: "请输入是否接触过武汉人或经过武汉",
                 trigger: "blur"
               }]
             },
             {
-              label: "反京时间",
+              label: "返京时间",
               prop: "gobacktime",
-              type: "datetime",
+              type: "date",
               format: "yyyy-MM-dd",
               rules: [{
                 required: true,
-                message: "请输入计划反京时间",
+                message: "请输入返京时间或计划返京时间",
                 trigger: "blur"
               }]
             },
@@ -157,7 +158,7 @@
               },
               rules: [{
                 required: true,
-                message: "请输入是否在隔离器",
+                message: "请输入是否在隔离期",
                 trigger: "blur"
               }]
             },
@@ -213,30 +214,54 @@
     },
     methods: {
       rowSave(row, loading, done) {
-        add(row).then(() => {
-          loading();
-          this.onLoad(this.page);
+        let addr = row.address.trim()
+        row.address = addr
+        if (addr === "" || addr === "null") {
           this.$message({
-            type: "success",
-            message: "操作成功!"
+            type: "fail",
+            message: "请输入打卡地址!"
           });
-        }, error => {
           done();
-          console.log(error);
-        });
+          return false;
+        } else {
+        
+          add(row).then(() => {
+            loading();
+            this.onLoad(this.page);
+            this.$message({
+              type: "success",
+              message: "操作成功!"
+            });
+          }, error => {
+            done();
+            console.log(error);
+          });
+        }
       },
       rowUpdate(row, index, loading, done) {
-        update(row).then(() => {
-          loading();
-          this.onLoad(this.page);
+
+        let addr = row.address.trim()
+        row.address = addr
+        if (addr === "" || addr === "null") {
           this.$message({
-            type: "success",
-            message: "操作成功!"
+            type: "fail",
+            message: "请输入打卡地址!"
           });
-        }, error => {
           done();
-          console.log(error);
-        });
+          return false;
+        } else {
+          update(row).then(() => {
+            loading();
+            this.onLoad(this.page);
+            this.$message({
+              type: "success",
+              message: "操作成功!"
+            });
+          }, error => {
+            done();
+            console.log(error);
+          });
+        }
       },
       rowDel(row) {
         this.$confirm("确定将选择数据删除?", {
@@ -269,6 +294,7 @@
             return remove(this.ids);
           })
           .then(() => {
+            this.page.currentPage--;
             this.onLoad(this.page);
             this.$message({
               type: "success",

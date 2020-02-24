@@ -101,6 +101,11 @@
               prop: "startTime",
               type: 'date',
               format: "yyyy-MM-dd",
+              pickerOptions: {
+                disabledDate(time) {
+                  return time.getTime() > Date.now();
+                }
+              },
               rules: [{
                 required: true,
                 message: "请输入开始观察时间",
@@ -110,6 +115,7 @@
             {
               label: "当前地点",
               prop: "address",
+              type: "textarea",
               rules: [{
                 required: true,
                 message: "请输入当前地点",
@@ -268,30 +274,53 @@
     },
     methods: {
       rowSave(row, loading, done) {
-        add(row).then(() => {
-          loading();
-          this.onLoad(this.page);
+        let addr = row.address.trim()
+        row.address = addr
+        if (addr === "" || addr === "null") {
           this.$message({
-            type: "success",
-            message: "操作成功!"
+            type: "fail",
+            message: "请输入当前地点!"
           });
-        }, error => {
           done();
-          console.log(error);
-        });
+          return false;
+        } else {
+          add(row).then(() => {
+            loading();
+            this.onLoad(this.page);
+            this.$message({
+              type: "success",
+              message: "操作成功!"
+            });
+          }, error => {
+            done();
+            console.log(error);
+          });
+        }
       },
       rowUpdate(row, index, loading, done) {
-        update(row).then(() => {
-          loading();
-          this.onLoad(this.page);
+
+        let addr = row.address.trim()
+        row.address = addr
+        if (addr === "" || addr === "null") {
           this.$message({
-            type: "success",
-            message: "操作成功!"
+            type: "fail",
+            message: "请输入当前地点!"
           });
-        }, error => {
           done();
-          console.log(error);
-        });
+          return false;
+        } else {
+          update(row).then(() => {
+            loading();
+            this.onLoad(this.page);
+            this.$message({
+              type: "success",
+              message: "操作成功!"
+            });
+          }, error => {
+            done();
+            console.log(error);
+          });
+        }
       },
       rowDel(row) {
         this.$confirm("确定将选择数据删除?", {
@@ -324,6 +353,7 @@
             return remove(this.ids);
           })
           .then(() => {
+            this.page.currentPage--;
             this.onLoad(this.page);
             this.$message({
               type: "success",
