@@ -33,9 +33,17 @@
 <script>
   import {getList, getDetail, add, update, remove} from "@/api/soybean/user";
   import {mapGetters} from "vuex";
+  import {validateEmail,isvalidatemobile} from '@/util/validate';
 
   export default {
     data() {
+      const validatePhone = (rule, value, callback) => {
+        if (isvalidatemobile(value)[0]) {
+          callback(new Error(isvalidatemobile(value)[1]));
+        } else {
+          callback();
+        }
+      };
       return {
         form: {},
         query: {},
@@ -85,11 +93,7 @@
             {
               label: "联系电话",
               prop: "phone",
-              rules: [{
-                required: true,
-                message: "请输入联系电话",
-                trigger: "blur"
-              }]
+              rules: [{required: true, validator: validatePhone, trigger: 'blur'}]
             },
             {
               label: "证件类型",
@@ -132,18 +136,17 @@
               dicData: [
                 {
                   label: "男",
-                  value: 1
+                  value: "男"
                 },
                 {
                   label: "女",
-                  value: 2
+                  value: "女"
                 },
                 {
                   label: "未知",
-                  value: 3
+                  value: "未知"
                 }
-              ],
-              hide: true
+              ]
             },
             {
               label: "头像",
@@ -153,6 +156,9 @@
             {
               label: "居住地址",
               prop: "homeAddress",
+              type:"textarea",
+              row:true,
+              span:24,
               rules: [{
                 required: true,
                 message: "请输入居住地址",
@@ -163,6 +169,9 @@
             {
               label: "详细地址",
               prop: "detailAddress",
+              type:"textarea",
+              row:true,
+              span:24,
               rules: [{
                 required: true,
                 message: "请输入详细地址",
@@ -251,7 +260,8 @@
             return remove(this.ids);
           })
           .then(() => {
-            this.onLoad(this.page);
+            this.onLoad({pageSize: 10,
+          currentPage: 1});
             this.$message({
               type: "success",
               message: "操作成功!"
