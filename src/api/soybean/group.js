@@ -12,6 +12,16 @@ export const getList = (current, size, params) => {
   })
 }
 
+export const getChildren = (id) => {
+  return request({
+    url: '/api/bid-soybean/group/children',
+    method: 'get',
+    params: {
+      id,
+    }
+  })
+}
+
 export const getDetail = (id) => {
   return request({
     url: '/api/bid-soybean/group/detail',
@@ -49,4 +59,13 @@ export const update = (row) => {
     data: row
   })
 }
+
+export const treeData = () => {
+  // row = {...row, managers: row.managers.join(',')}
+  return request({
+    url: '/api/bid-soybean/group/select',
+    method: 'get'
+  })
+}
+
 
