@@ -7,7 +7,6 @@
       <avue-crud :option="option"
                 :table-loading="loading"
                 :data="data"
-                :page="page"
                 :permission="permissionList"
                 :before-open="beforeOpen"
                 v-model="form"
@@ -56,7 +55,6 @@
             }],
           },
           props:{
-            expanded: false,
             labelText:'组织架构',
             label:'name',
             value:'id',
@@ -78,6 +76,7 @@
           index: true,
           viewBtn: true,
           selection: true,
+          height: 550,
           column: [
             {
               label: "群组名称",
@@ -420,25 +419,21 @@
       },
       onLoad(page, params = {}) {
         this.loading = true;
-        getList(page.currentPage, page.pageSize, Object.assign(params, this.query)).then(res => {
-          const data = res.data.data;
-          this.page.total = data.total;
-          this.data = data.records;
-          this.loading = false;
-          this.selectionClear();
-        });
         treeData().then(res =>{
           const data = res.data.data;
           data.expanded = false;
           this.treeData = data;
+          this.loading = false;
         });
       },
       nodeClick(data){
+        this.loading = true;
         getChildren(data.id).then(res =>{
           const data = res.data.data;
-          this.data = data.records;
-          this.loading = false;
+          console.log(data);
+          this.data = data;
           this.selectionClear();
+          this.loading = false;
         });
       }
     }
