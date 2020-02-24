@@ -1,42 +1,68 @@
 <template>
-  <basic-container>
-    <avue-crud :option="option"
-               :table-loading="loading"
-               :data="data"
-               :page="page"
-               :permission="permissionList"
-               :before-open="beforeOpen"
-               v-model="form"
-               ref="crud"
-               @row-update="rowUpdate"
-               @row-save="rowSave"
-               @row-del="rowDel"
-               @search-change="searchChange"
-               @search-reset="searchReset"
-               @selection-change="selectionChange"
-               @current-change="currentChange"
-               @size-change="sizeChange"
-               @on-load="onLoad">
-      <template slot="menuLeft">
-        <el-button type="danger"
-                   size="small"
-                   icon="el-icon-delete"
-                   plain
-                   v-if="permission.group_delete"
-                   @click="handleDelete">删 除
-        </el-button>
-      </template>
-    </avue-crud>
-  </basic-container>
+  <el-container>
+    <el-aside width="300px">
+      <avue-tree :option="treeOption" :data="treeData" @node-click="nodeClick"></avue-tree>
+    </el-aside>
+    <el-main>
+      <avue-crud :option="option"
+                :table-loading="loading"
+                :data="data"
+                :page="page"
+                :permission="permissionList"
+                :before-open="beforeOpen"
+                v-model="form"
+                ref="crud"
+                @row-update="rowUpdate"
+                @row-save="rowSave"
+                @row-del="rowDel"
+                @search-change="searchChange"
+                @search-reset="searchReset"
+                @selection-change="selectionChange"
+                @current-change="currentChange"
+                @size-change="sizeChange"
+                @on-load="onLoad">
+        <template slot="menuLeft">
+          <el-button type="danger"
+                    size="small"
+                    icon="el-icon-delete"
+                    plain
+                    v-if="permission.group_delete"
+                    @click="handleDelete">删 除
+          </el-button>
+        </template>
+      </avue-crud>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
-  import {getList, getDetail, add, update, remove} from "@/api/soybean/group";
+  import {getList, getDetail, add, update, remove, treeData, getChildren} from "@/api/soybean/group";
   import {mapGetters} from "vuex";
 
   export default {
     data() {
       return {
+        treeData:[],
+        treeOption:{
+          nodeKey:'id',
+          addBtn:false,
+          menu:false,
+          size:'small',
+          formOption:{
+            labelWidth:100,
+            column:[{
+                label:'自定义项',
+                prop:'test'
+            }],
+          },
+          props:{
+            expanded: false,
+            labelText:'组织架构',
+            label:'name',
+            value:'id',
+            children:'children'
+          }
+        },
         form: {},
         query: {},
         loading: true,
@@ -74,11 +100,17 @@
               }]
             },
             {
-              label: "群组Logo",
-              prop: "logo",
+              label: "群组类型",
+              prop: "groupType",
+              type: 'select',
+              dicUrl: "/api/bid-system/dict/dictionary?code=group_type",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
-                required: false,
-                message: "请输入群logo",
+                required: true,
+                message: "请输入群组类型",
                 trigger: "blur"
               }]
             },
@@ -110,8 +142,11 @@
             },
             {
               label: "父群组",
-              prop: "parentGroup",
+              prop: "parentGroups",
               type: 'tree',
+              multiple: true,
+              hide: true,
+              dataType: "string",
               dicUrl: "/api/bid-soybean/group/select",
               props: {
                 label: "name",
@@ -120,6 +155,15 @@
               rules: [{
                 required: false,
                 message: "请输入父群组",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "群组Logo",
+              prop: "logo",
+              rules: [{
+                required: false,
+                message: "请输入群logo",
                 trigger: "blur"
               }]
             },
@@ -142,6 +186,8 @@
               label: "群更新人",
               prop: "updateUser",
               type: 'select',
+              addDisplay: false,
+              editDisplay: false,
               dicUrl: "/api/bid-soybean/user/select",
               props: {
                 label: "name",
@@ -159,6 +205,8 @@
               width: 100,
               type: 'datetime',
               disabled: true,
+              addDisplay: false,
+              editDisplay: false,              
               format: "yyyy-MM-dd",
               valueFormat: "datetime",
               rules: [{
@@ -173,6 +221,8 @@
               width: 100,
               type: 'datetime',
               disabled: true,
+              addDisplay: false,
+              editDisplay: false,
               format: "yyyy-MM-dd",
               valueFormat: "datetime",
               rules: [{
@@ -181,52 +231,36 @@
                 trigger: "blur"
               }]
             },
-            {
-              label: "群状态",
-              prop: "status",
-              type: 'radio',
-              dicUrl: "/api/bid-system/dict/dictionary?code=status",
-              props: {
-                label: "dictValue",
-                value: "dictKey"
-              },
-              rules: [{
-                required: true,
-                message: "请输入状态",
-                trigger: "blur"
-              }]
-            },
-            {
-              label: "需要审批",
-              prop: "approval",
-              type: 'radio',
-              dicUrl: "/api/bid-system/dict/dictionary?code=approval",
-              props: {
-                label: "dictValue",
-                value: "dictKey"
-              },
-              rules: [{
-                required: true,
-                message: "请输入是否需要审批",
-                trigger: "blur"
-              }]
-            },
-            {
-              label: "群组类型",
-              prop: "groupType",
-              type: 'select',
-              span: 24,
-              dicUrl: "/api/bid-system/dict/dictionary?code=group_type",
-              props: {
-                label: "dictValue",
-                value: "dictKey"
-              },
-              rules: [{
-                required: true,
-                message: "请输入群组类型",
-                trigger: "blur"
-              }]
-            },
+            // {
+            //   label: "群状态",
+            //   prop: "status",
+            //   type: 'radio',
+            //   dicUrl: "/api/bid-system/dict/dictionary?code=status",
+            //   props: {
+            //     label: "dictValue",
+            //     value: "dictKey"
+            //   },
+            //   rules: [{
+            //     required: true,
+            //     message: "请输入状态",
+            //     trigger: "blur"
+            //   }]
+            // },
+            // {
+            //   label: "需要审批",
+            //   prop: "approval",
+            //   type: 'radio',
+            //   dicUrl: "/api/bid-system/dict/dictionary?code=approval",
+            //   props: {
+            //     label: "dictValue",
+            //     value: "dictKey"
+            //   },
+            //   rules: [{
+            //     required: true,
+            //     message: "请输入是否需要审批",
+            //     trigger: "blur"
+            //   }]
+            // },
             // {
             //   label: "公司地址ID",
             //   prop: "addressId",
@@ -246,7 +280,7 @@
             //   }]
             // },
             // {
-            //   label: "详细地址",
+            //   label: "详细地址",s
             //   prop: "detailAddress",
             //   rules: [{
             //     required: false,
@@ -389,6 +423,19 @@
         getList(page.currentPage, page.pageSize, Object.assign(params, this.query)).then(res => {
           const data = res.data.data;
           this.page.total = data.total;
+          this.data = data.records;
+          this.loading = false;
+          this.selectionClear();
+        });
+        treeData().then(res =>{
+          const data = res.data.data;
+          data.expanded = false;
+          this.treeData = data;
+        });
+      },
+      nodeClick(data){
+        getChildren(data.id).then(res =>{
+          const data = res.data.data;
           this.data = data.records;
           this.loading = false;
           this.selectionClear();
