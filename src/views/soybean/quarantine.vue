@@ -273,7 +273,28 @@
       }
     },
     methods: {
+      convertUTCTimeToLocalTime(UTCDateString) {
+        if(!UTCDateString){
+          return '-';
+        }
+        function formatFunc(str) {    //格式化显示
+          return str > 9 ? str : '0' + str
+        }
+        var date2 = new Date(UTCDateString);     //这步是关键
+        var year = date2.getFullYear();
+        var mon = formatFunc(date2.getMonth() + 1);
+        var day = formatFunc(date2.getDate());
+        // var hour = date2.getHours();
+        // var noon = hour >= 12 ? 'PM' : 'AM';
+        // hour = hour>=12?hour-12:hour;
+        // hour = formatFunc(hour);
+        // var min = formatFunc(date2.getMinutes());
+        // var dateStr = year+'-'+mon+'-'+day+' '+noon +' '+hour+':'+min;
+        var dateStr = year+'-'+mon+'-'+day;
+        return dateStr;
+      },
       rowSave(row, loading, done) {
+        row.startTime = this.convertUTCTimeToLocalTime(row.startTime);
         let addr = row.address.trim()
         row.address = addr
         if (addr === "" || addr === "null") {
@@ -298,6 +319,7 @@
         }
       },
       rowUpdate(row, index, loading, done) {
+        row.startTime = this.convertUTCTimeToLocalTime(row.startTime);
 
         let addr = row.address.trim()
         row.address = addr
@@ -332,6 +354,7 @@
             return remove(row.id);
           })
           .then(() => {
+            this.page.currentPage--;
             this.onLoad(this.page);
             this.$message({
               type: "success",
