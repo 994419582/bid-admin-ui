@@ -54,17 +54,9 @@
           selection: true,
           column: [
             {
-              label: "主键",
-              prop: "id",
-              rules: [{
-                required: true,
-                message: "请输入主键",
-                trigger: "blur"
-              }]
-            },
-            {
               label: "微信ID",
               prop: "wechatId",
+              editDisplay: false,
               rules: [{
                 required: true,
                 message: "请输入微信ID",
@@ -74,6 +66,7 @@
             {
               label: "微信昵称",
               prop: "nickname",
+              editDisplay: false,
               rules: [{
                 required: true,
                 message: "请输入微信昵称",
@@ -99,8 +92,20 @@
               }]
             },
             {
-              label: "证件类型ID",
+              label: "证件类型",
               prop: "idType",
+              type: "select",
+              dicData: [
+                {
+                  label: "大陆身份证",
+                  value: "大陆身份证"
+                },
+                {
+                  label: "护照",
+                  value: "护照"
+                }
+              ],
+              hide: true,
               rules: [{
                 required: true,
                 message: "请输入证件类型ID",
@@ -118,66 +123,32 @@
             },
             {
               label: "备注",
-              prop: "remarks",
-              rules: [{
-                required: true,
-                message: "请输入备注",
-                trigger: "blur"
-              }]
+              prop: "remarks"
             },
             {
               label: "性别",
               prop: "gender",
-              rules: [{
-                required: true,
-                message: "请输入性别",
-                trigger: "blur"
-              }]
-            },
-            {
-              label: "国家",
-              prop: "country",
-              rules: [{
-                required: true,
-                message: "请输入国家",
-                trigger: "blur"
-              }]
-            },
-            {
-              label: "省",
-              prop: "province",
-              rules: [{
-                required: true,
-                message: "请输入省",
-                trigger: "blur"
-              }]
-            },
-            {
-              label: "市",
-              prop: "city",
-              rules: [{
-                required: true,
-                message: "请输入市",
-                trigger: "blur"
-              }]
+              type: "select",
+              dicData: [
+                {
+                  label: "男",
+                  value: 1
+                },
+                {
+                  label: "女",
+                  value: 2
+                },
+                {
+                  label: "未知",
+                  value: 3
+                }
+              ],
+              hide: true
             },
             {
               label: "头像",
               prop: "avatarUrl",
-              rules: [{
-                required: true,
-                message: "请输入头像",
-                trigger: "blur"
-              }]
-            },
-            {
-              label: "居家观察地址",
-              prop: "homeId",
-              rules: [{
-                required: true,
-                message: "请输入居家观察地址",
-                trigger: "blur"
-              }]
+              editDisplay: false,
             },
             {
               label: "居住地址",
@@ -186,7 +157,8 @@
                 required: true,
                 message: "请输入居住地址",
                 trigger: "blur"
-              }]
+              }],
+              overHidden: true
             },
             {
               label: "详细地址",
@@ -195,7 +167,8 @@
                 required: true,
                 message: "请输入详细地址",
                 trigger: "blur"
-              }]
+              }],
+              overHidden: true
             },
           ]
         },
