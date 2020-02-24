@@ -107,7 +107,15 @@
                 {
                   label: "护照",
                   value: "护照"
-                }
+                },
+                {
+                  label: "军官证",
+                  value: "军官证"
+                },
+                {
+                  label: "其他",
+                  value: "其他"
+                },
               ],
               hide: true,
               rules: [{
