@@ -45,6 +45,7 @@
         treeOption:{
           nodeKey:'id',
           expandAll: false,
+          height: 550,
           addBtn:false,
           menu:false,
           size:'small',
@@ -74,7 +75,6 @@
         option: {
           tip: false,
           border: true,
-          index: true,
           viewBtn: true,
           selection: true,
           height: 550,
@@ -93,6 +93,7 @@
               label: "群组全称",
               prop: "fullName",
               width: 300,
+              hide: true,
               rules: [{
                 required: true,
                 message: "请输入群组名全称",
@@ -147,7 +148,7 @@
               multiple: true,
               hide: true,
               dataType: "string",
-              dicUrl: "/api/bid-soybean/group/select",
+              dicUrl: "/api/bid-soybean/group/tree/children",
               props: {
                 label: "name",
                 value: "id"
@@ -420,6 +421,12 @@
       },
       onLoad(page, params = {}) {
         this.loading = true;
+        getChildren(1).then(res =>{
+          const data = res.data.data;
+          console.log(data);
+          this.data = data;
+          this.selectionClear();
+        });
         treeData().then(res =>{
           const data = res.data.data;
           data.expanded = false;
