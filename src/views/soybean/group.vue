@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import {getList, getDetail, add, update, remove, treeData, getChildren} from "@/api/soybean/group";
+  import {getDetail, add, update, remove, treeData, getChildren,getParentGroupDic} from "@/api/soybean/group";
   import {mapGetters} from "vuex";
 
   export default {
@@ -72,12 +72,12 @@
           total: 0
         },
         selectionList: [],
+        parentGroupDic: [],
         option: {
           tip: false,
           border: true,
           viewBtn: true,
           selection: true,
-          height: 550,
           column: [
             {
               label: "群组名称",
@@ -110,7 +110,7 @@
                 value: "dictKey"
               },
               rules: [{
-                required: true,
+                required: false,
                 message: "请输入群组类型",
                 trigger: "blur"
               }]
@@ -118,6 +118,7 @@
             {
               label: "群组人数",
               prop: "userAccount",
+              type: "number",
               rules: [{
                 required: true,
                 message: "请输入群人数",
@@ -127,9 +128,10 @@
             {
               label: "群管理员",
               prop: "managers",
-              type: 'select',
+              type: 'tree',
               multiple: true,
               dataType: "string",
+              filterable: true,
               dicUrl: "/api/bid-soybean/user/select",
               props: {
                 label: "name",
@@ -148,7 +150,8 @@
               multiple: true,
               hide: true,
               dataType: "string",
-              dicUrl: "/api/bid-soybean/group/tree/children",
+              // dicUrl: "/api/bid-soybean/group/select/noOneself?id={{key}}",
+              dicData: [],
               props: {
                 label: "name",
                 value: "id"
@@ -395,6 +398,11 @@
           getDetail(this.form.id).then(res => {
             this.form = res.data.data;
           });
+          getParentGroupDic(this.form.id).then(res =>{
+          const data = res.data.data;
+          this.option.column[5].dicData = data
+          this.$set(this.option.column, 5, this.option.column[5])
+        });
         }
         done();
       },
@@ -419,7 +427,7 @@
       sizeChange(pageSize){
         this.page.pageSize = pageSize;
       },
-      onLoad(page, params = {}) {
+      onLoad() {
         this.loading = true;
         getChildren(1).then(res =>{
           const data = res.data.data;
@@ -427,6 +435,11 @@
           this.data = data;
           this.selectionClear();
         });
+        // getParentGroupDic().then(res =>{
+        //   const data = res.data.data;
+        //   this.option.column[5].dicData = data
+        //   this.$set(this.option.column, 5, this.option.column[5])
+        // });
         treeData().then(res =>{
           const data = res.data.data;
           data.expanded = false;

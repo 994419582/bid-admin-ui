@@ -22,6 +22,16 @@ export const getChildren = (id) => {
   })
 }
 
+export const getParentGroupDic = (id) => {
+  return request({
+    url: '/api/bid-soybean/group/select/noOneself',
+    method: 'get',
+    params: {
+      id,
+    }
+  })
+}
+
 export const getDetail = (id) => {
   return request({
     url: '/api/bid-soybean/group/detail',
