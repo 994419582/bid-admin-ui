@@ -92,6 +92,21 @@
               }]
             },
             {
+              label: "未返京原因",
+              prop: "nobackreason",
+              type: 'select',
+              dicUrl: "/api/bid-system/dict/dictionary?code=nobackreason",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: true,
+                message: "请选择未返京原因",
+                trigger: "blur"
+              }]
+            },
+            {
               label: "健康状态",
               prop: "healthy",
               type: 'select',
@@ -107,6 +122,15 @@
               }]
             },
             {
+              label: "体温",
+              prop: "temperature",
+              rules: [{
+                required: true,
+                message: "请输入体温",
+                trigger: "blur"
+              }]
+            },
+            {
               label: "是否入院",
               prop: "hospital",
               type: 'select',
@@ -118,6 +142,36 @@
               rules: [{
                 required: true,
                 message: "请选择是否有就诊入院",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "是否确诊",
+              prop: "comfirmed",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=yes_no",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: true,
+                message: "请输入是否确诊",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "是否就诊入院",
+              prop: "admitting",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=yes_no",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: true,
+                message: "请输入是否就诊入院",
                 trigger: "blur"
               }]
             },
@@ -162,15 +216,15 @@
                 trigger: "blur"
               }]
             },
-            {
-              label: "未返原因",
-              prop: "reason",
-              rules: [{
-                required: false,
-                message: "请输入未返京原因",
-                trigger: "blur"
-              }]
-            },
+            // {
+            //   label: "未返京原因",
+            //   prop: "reason",
+            //   rules: [{
+            //     required: false,
+            //     message: "请输入未返京原因",
+            //     trigger: "blur"
+            //   }]
+            // },
             {
               label: "备注",
               prop: "remarks",
