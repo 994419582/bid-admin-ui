@@ -33,7 +33,7 @@
 <script>
   import {getList, getDetail, add, update, remove} from "@/api/soybean/user";
   import {mapGetters} from "vuex";
-  import {validateEmail,isvalidatemobile} from '@/util/validate';
+  import {isvalidatemobile} from '@/util/validate';
 
   export default {
     data() {
