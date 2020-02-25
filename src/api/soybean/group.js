@@ -78,4 +78,14 @@ export const treeData = () => {
   })
 }
 
+export const search = (name) => {
+  return request({
+    url: '/api/bid-soybean/group/search',
+    method: 'get',
+    params: {
+      name: name,
+    }
+  })
+}
+
 

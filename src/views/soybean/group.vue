@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import {getDetail, add, update, remove, treeData, getChildren,getParentGroupDic} from "@/api/soybean/group";
+  import {getDetail, add, update, remove, treeData, getChildren,search} from "@/api/soybean/group";
   import {mapGetters} from "vuex";
 
   export default {
@@ -83,6 +83,7 @@
               label: "群组名称",
               prop: "name",
               width: 200,
+              hide: false,
               rules: [{
                 required: true,
                 message: "请输入群组名",
@@ -93,7 +94,7 @@
               label: "群组全称",
               prop: "fullName",
               width: 300,
-              hide: true,
+              search:true,
               rules: [{
                 required: true,
                 message: "请输入群组名全称",
@@ -110,7 +111,7 @@
                 value: "dictKey"
               },
               rules: [{
-                required: false,
+                required: true,
                 message: "请输入群组类型",
                 trigger: "blur"
               }]
@@ -122,6 +123,40 @@
               rules: [{
                 required: true,
                 message: "请输入群人数",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "群创建人",
+              prop: "createUser",
+              type: 'tree',
+              dicUrl: "/api/bid-soybean/user/select",
+              props: {
+                label: "name",
+                value: "id"
+              },
+              rules: [{
+                required: true,
+                message: "请输入群创建人",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "父群组",
+              prop: "parentGroups",
+              type: 'tree',
+              multiple: true,
+              hide: true,
+              dataType: "string",
+              dicUrl: "/api/bid-soybean/group/select",
+              // dicData: [],
+              props: {
+                label: "name",
+                value: "id"
+              },
+              rules: [{
+                required: true,
+                message: "请输入父群组",
                 trigger: "blur"
               }]
             },
@@ -144,45 +179,11 @@
               }]
             },
             {
-              label: "父群组",
-              prop: "parentGroups",
-              type: 'tree',
-              multiple: true,
-              hide: true,
-              dataType: "string",
-              // dicUrl: "/api/bid-soybean/group/select/noOneself?id={{key}}",
-              dicData: [],
-              props: {
-                label: "name",
-                value: "id"
-              },
-              rules: [{
-                required: false,
-                message: "请输入父群组",
-                trigger: "blur"
-              }]
-            },
-            {
               label: "群组Logo",
               prop: "logo",
               rules: [{
                 required: false,
                 message: "请输入群logo",
-                trigger: "blur"
-              }]
-            },
-            {
-              label: "群创建人",
-              prop: "createUser",
-              type: 'select',
-              dicUrl: "/api/bid-soybean/user/select",
-              props: {
-                label: "name",
-                value: "id"
-              },
-              rules: [{
-                required: false,
-                message: "请输入群创建人",
                 trigger: "blur"
               }]
             },
@@ -398,11 +399,13 @@
           getDetail(this.form.id).then(res => {
             this.form = res.data.data;
           });
-          getParentGroupDic(this.form.id).then(res =>{
-          const data = res.data.data;
-          this.option.column[5].dicData = data
-          this.$set(this.option.column, 5, this.option.column[5])
-        });
+          // getParentGroupDic(this.form.id).then(res =>{
+          //   const data = res.data.data;
+          //   console.log(this)
+          //   this.option.column[5].dicData = data
+          //   this.$set(this.option.column, 5, this.option.column[5])
+          //    console.log(this)
+          // });
         }
         done();
       },
@@ -412,7 +415,11 @@
       },
       searchChange(params) {
         this.query = params;
-        this.onLoad(this.page, params);
+        search(this.query.fullName).then(res =>{
+          const data = res.data.data;
+          this.data = data;
+          this.selectionClear();
+        })
       },
       selectionChange(list) {
         this.selectionList = list;
@@ -431,11 +438,10 @@
         this.loading = true;
         getChildren(1).then(res =>{
           const data = res.data.data;
-          console.log(data);
           this.data = data;
           this.selectionClear();
         });
-        // getParentGroupDic().then(res =>{
+        // getParentGroupDic(1).then(res =>{
         //   const data = res.data.data;
         //   this.option.column[5].dicData = data
         //   this.$set(this.option.column, 5, this.option.column[5])
