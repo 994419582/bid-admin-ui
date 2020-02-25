@@ -63,7 +63,7 @@ export const update = (row) => {
 export const treeData = () => {
   // row = {...row, managers: row.managers.join(',')}
   return request({
-    url: '/api/bid-soybean/group/select',
+    url: '/api/bid-soybean/group/tree/children',
     method: 'get'
   })
 }
