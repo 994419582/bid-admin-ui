@@ -268,8 +268,7 @@
             return remove(this.ids);
           })
           .then(() => {
-            this.onLoad({pageSize: 10,
-          currentPage: 1});
+            this.onLoad(this.page);
             this.$message({
               type: "success",
               message: "操作成功!"
@@ -312,6 +311,11 @@
           const data = res.data.data;
           this.page.total = data.total;
           this.data = data.records;
+
+          if (data.records.length === 0 && this.page.currentPage != 1) {
+            this.page.currentPage = this.page.currentPage - 1;
+            this.onLoad(this.page, params);
+          }
           this.loading = false;
           this.selectionClear();
         });
