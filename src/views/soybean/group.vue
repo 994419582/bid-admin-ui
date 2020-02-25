@@ -44,6 +44,7 @@
         treeData:[],
         treeOption:{
           nodeKey:'id',
+          expandAll: false,
           addBtn:false,
           menu:false,
           size:'small',
