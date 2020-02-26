@@ -130,7 +130,7 @@
               label: "群创建人",
               prop: "createUser",
               type: 'tree',
-              dicUrl: "/api/bid-soybean/user/select",
+              dicUrl: "/api/bid-soybean/user/select?name={{key}}",
               props: {
                 label: "name",
                 value: "id"
@@ -167,7 +167,7 @@
               multiple: true,
               dataType: "string",
               filterable: true,
-              dicUrl: "/api/bid-soybean/user/select",
+              dicUrl: "/api/bid-soybean/user/select?name={{key}}",
               props: {
                 label: "name",
                 value: "id"
@@ -193,7 +193,7 @@
               type: 'select',
               addDisplay: false,
               editDisplay: false,
-              dicUrl: "/api/bid-soybean/user/select",
+              dicUrl: "/api/bid-soybean/user/select?name={{key}}",
               props: {
                 label: "name",
                 value: "id"
