@@ -70,11 +70,12 @@
               label: "用户",
               prop: "userId",
               type: 'select',
-              dicUrl: "/api/bid-soybean/user/select",
+              remote: true,
               props: {
                 label: "name",
                 value: "id"
               },
+              dicUrl: "/api/bid-soybean/user/select?name={{key}}",
               rules: [{
                 required: true,
                 message: "请输入",
