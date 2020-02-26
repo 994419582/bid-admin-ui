@@ -102,7 +102,7 @@
               dicUrl: "/api/bid-system/dict/dictionary?code=id_type",
               props: {
                 label: "dictValue",
-                value: "dictValue"
+                value: "dictKey"
               },
               hide: true,
               rules: [{
@@ -131,7 +131,7 @@
               dicUrl: "/api/bid-system/dict/dictionary?code=sex",
               props: {
                 label: "dictValue",
-                value: "dictValue"
+                value: "dictKey"
               }
             },
             {
