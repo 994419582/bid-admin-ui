@@ -99,24 +99,11 @@
               label: "证件类型",
               prop: "idType",
               type: "select",
-              dicData: [
-                {
-                  label: "大陆身份证",
-                  value: "大陆身份证"
-                },
-                {
-                  label: "护照",
-                  value: "护照"
-                },
-                {
-                  label: "军官证",
-                  value: "军官证"
-                },
-                {
-                  label: "其他",
-                  value: "其他"
-                },
-              ],
+              dicUrl: "/api/bid-system/dict/dictionary?code=id_type",
+              props: {
+                label: "dictValue",
+                value: "dictValue"
+              },
               hide: true,
               rules: [{
                 required: true,
@@ -141,20 +128,11 @@
               label: "性别",
               prop: "gender",
               type: "select",
-              dicData: [
-                {
-                  label: "男",
-                  value: "男"
-                },
-                {
-                  label: "女",
-                  value: "女"
-                },
-                {
-                  label: "未知",
-                  value: "未知"
-                }
-              ]
+              dicUrl: "/api/bid-system/dict/dictionary?code=sex",
+              props: {
+                label: "dictValue",
+                value: "dictValue"
+              }
             },
             {
               label: "头像",
