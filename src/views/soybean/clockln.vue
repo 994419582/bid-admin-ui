@@ -232,7 +232,7 @@
               type: "date",
               format: "yyyy-MM-dd",
               rules: [{
-                required: true,
+                required: false,
                 message: "请输入返京时间或计划返京时间",
                 trigger: "blur"
               }]
