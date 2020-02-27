@@ -202,7 +202,7 @@
             },
             {
               label: "离京时间",
-              prop: "leave",
+              prop: "leavetime",
               type: "date",
               format: "yyyy-MM-dd",
               rules: [{
