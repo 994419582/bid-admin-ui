@@ -8,7 +8,6 @@
                :before-open="beforeOpen"
                v-model="form"
                ref="crud"
-               @row-update="rowUpdate"
                @row-save="rowSave"
                @row-del="rowDel"
                @search-change="searchChange"
@@ -54,29 +53,32 @@
           selection: true,
           column: [
             {
-              label: "主键",
-              prop: "id",
-              rules: [{
-                required: true,
-                message: "请输入主键",
-                trigger: "blur"
-              }]
-            },
-            {
-              label: "用户主键",
+              label: "用户名称",
               prop: "userId",
+              type: 'tree',
+              dicUrl: "/api/bid-soybean/user/select?name={{key}}",
+              props: {
+                label: "name",
+                value: "id"
+              },
               rules: [{
                 required: true,
-                message: "请输入用户主键",
+                message: "请输入用户名称",
                 trigger: "blur"
               }]
             },
             {
-              label: "群组主键",
+              label: "群组名称",
               prop: "groupId",
+              type: 'tree',
+              dicUrl: "/api/bid-soybean/group/select",
+              props: {
+                label: "name",
+                value: "id"
+              },
               rules: [{
                 required: true,
-                message: "请输入群组主键",
+                message: "请输入群组名称",
                 trigger: "blur"
               }]
             },
@@ -92,7 +94,7 @@
           addBtn: this.vaildData(this.permission.usergroup_add, false),
           viewBtn: this.vaildData(this.permission.usergroup_view, false),
           delBtn: this.vaildData(this.permission.usergroup_delete, false),
-          editBtn: this.vaildData(this.permission.usergroup_edit, false)
+          editBtn: false
         };
       },
       ids() {

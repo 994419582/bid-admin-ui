@@ -54,7 +54,7 @@
           selection: true,
           column: [
             {
-              label: "群组主键",
+              label: "群组名称",
               prop: "groupId",
               dicUrl: "/api/bid-soybean/group/select",
               props: {
@@ -104,10 +104,10 @@
       ...mapGetters(["permission"]),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permission.grouplog_add, false),
+          addBtn: false,
           viewBtn: this.vaildData(this.permission.grouplog_view, false),
           delBtn: this.vaildData(this.permission.grouplog_delete, false),
-          editBtn: this.vaildData(this.permission.grouplog_edit, false)
+          editBtn: false
         };
       },
       ids() {
