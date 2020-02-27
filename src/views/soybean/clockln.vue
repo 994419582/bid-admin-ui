@@ -123,6 +123,15 @@
               }]
             },
             {
+              label: "其他情况",
+              prop: "otherhealthy",
+              rules: [{
+                required: false,
+                message: "请输入健康状况其他情况",
+                trigger: "blur"
+              }]
+            },
+            {
               label: "体温",
               prop: "temperature",
               rules: [{
@@ -177,6 +186,32 @@
               }]
             },
             {
+              label: "是否离京",
+              prop: "leave",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=yes_no",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: true,
+                message: "请输入是否离京",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "离京时间",
+              prop: "leave",
+              type: "date",
+              format: "yyyy-MM-dd",
+              rules: [{
+                required: false,
+                message: "请输入离京时间",
+                trigger: "blur"
+              }]
+            },
+            {
               label: "是否武汉",
               prop: "wuhan",
               type: 'radio',
@@ -199,6 +234,15 @@
               rules: [{
                 required: true,
                 message: "请输入返京时间或计划返京时间",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "返京航班/车次",
+              prop: "flight",
+              rules: [{
+                required: false,
+                message: "请输入航班/车次",
                 trigger: "blur"
               }]
             },
