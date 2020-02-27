@@ -187,23 +187,23 @@
                 trigger: "blur"
               }]
             },
-            {
-              label: "群更新人",
-              prop: "updateUser",
-              type: 'select',
-              addDisplay: false,
-              editDisplay: false,
-              dicUrl: "/api/bid-soybean/user/select?name={{key}}",
-              props: {
-                label: "name",
-                value: "id"
-              },
-              rules: [{
-                required: false,
-                message: "请输入群创建人",
-                trigger: "blur"
-              }]
-            },
+            // {
+            //   label: "群更新人",
+            //   prop: "updateUser",
+            //   type: 'select',
+            //   addDisplay: false,
+            //   editDisplay: false,
+            //   dicUrl: "/api/bid-soybean/user/select?name={{key}}",
+            //   props: {
+            //     label: "name",
+            //     value: "id"
+            //   },
+            //   rules: [{
+            //     required: false,
+            //     message: "请输入群创建人",
+            //     trigger: "blur"
+            //   }]
+            // },
             {
               label: "创建日期",
               prop: "createTime",
