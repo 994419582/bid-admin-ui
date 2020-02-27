@@ -54,17 +54,13 @@
           selection: true,
           column: [
             {
-              label: "主键",
-              prop: "id",
-              rules: [{
-                required: true,
-                message: "请输入主键",
-                trigger: "blur"
-              }]
-            },
-            {
               label: "群组主键",
               prop: "groupId",
+              dicUrl: "/api/bid-soybean/group/select",
+              props: {
+                label: "name",
+                value: "id"
+              },
               rules: [{
                 required: true,
                 message: "请输入群组主键",
@@ -74,6 +70,11 @@
             {
               label: "用户主键",
               prop: "userId",
+              dicUrl: "/api/bid-soybean/user/select?name={{key}}",
+              props: {
+                label: "name",
+                value: "id"
+              },
               rules: [{
                 required: true,
                 message: "请输入用户主键",
@@ -83,6 +84,11 @@
             {
               label: "操作类型",
               prop: "eventType",
+              dicUrl: "/api/bid-system/dict/dictionary?code=eventType",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
               rules: [{
                 required: true,
                 message: "请输入操作类型",
