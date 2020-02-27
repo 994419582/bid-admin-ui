@@ -102,7 +102,7 @@
                 value: "dictKey"
               },
               rules: [{
-                required: true,
+                required: false,
                 message: "请选择未返京原因",
                 trigger: "blur"
               }]
