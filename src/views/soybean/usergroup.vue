@@ -1,5 +1,8 @@
 <template>
-  <basic-container>
+  <el-container>
+    <el-aside width="300px">
+      <avue-tree :option="treeOption" :data="treeData" @node-click="nodeClick"></avue-tree>
+    </el-aside>
     <avue-crud :option="option"
                :table-loading="loading"
                :data="data"
@@ -26,16 +29,38 @@
         </el-button>
       </template>
     </avue-crud>
-  </basic-container>
+  </el-container>
 </template>
 
 <script>
-  import {getList, getDetail, add, update, remove} from "@/api/soybean/usergroup";
+  import {getList, getDetail, add, update, remove, treeData,selectUser} from "@/api/soybean/usergroup";
   import {mapGetters} from "vuex";
 
   export default {
     data() {
       return {
+        treeData:[],
+        treeOption:{
+          nodeKey:'id',
+          expandAll: false,
+          height: 550,
+          addBtn:false,
+          menu:false,
+          size:'small',
+          formOption:{
+            labelWidth:100,
+            column:[{
+                label:'自定义项',
+                prop:'test'
+            }],
+          },
+          props:{
+            labelText:'组织架构',
+            label:'name',
+            value:'id',
+            children:'children'
+          }
+        },
         form: {},
         query: {},
         loading: true,
@@ -204,6 +229,25 @@
         this.page.pageSize = pageSize;
       },
       onLoad(page, params = {}) {
+        this.loading = true;
+        getList(page.currentPage, page.pageSize, Object.assign(params, this.query)).then(res => {
+          const data = res.data.data;
+          this.page.total = data.total;
+          this.data = data.records;
+          this.loading = false;
+          this.selectionClear();
+        });
+        treeData().then(res =>{
+          const data = res.data.data;
+          data.expanded = false;
+          this.treeData = data;
+          this.loading = false;
+        });
+      },
+      nodeClick(data){
+        let params = {};
+        params.groupId = data.id;
+        let page = this.page;
         this.loading = true;
         getList(page.currentPage, page.pageSize, Object.assign(params, this.query)).then(res => {
           const data = res.data.data;

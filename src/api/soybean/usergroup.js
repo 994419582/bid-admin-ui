@@ -48,3 +48,19 @@ export const update = (row) => {
   })
 }
 
+export const treeData = () => {
+  return request({
+    url: '/api/bid-soybean/group/tree/children',
+    method: 'get'
+  })
+}
+
+export const selectUser = (id) => {
+  return request({
+    url: '/api/bid-soybean/usergroup/selectUser',
+    method: 'get',
+    params: {
+      id,
+    }
+  })
+}
