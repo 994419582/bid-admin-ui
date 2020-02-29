@@ -261,6 +261,36 @@
                 trigger: "blur"
               }]
             },
+            {
+              label: "是否在北京",
+              prop: "beijing",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=hbbj",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: true,
+                message: "请输入是否在北京",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "是否经过湖北",
+              prop: "hubei",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=hbbj",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: true,
+                message: "请输入是否经过湖北",
+                trigger: "blur"
+              }]
+            },
             // {
             //   label: "未返京原因",
             //   prop: "reason",
