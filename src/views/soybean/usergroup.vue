@@ -107,6 +107,9 @@
     },
     methods: {
       rowSave(row, loading, done) {
+        let newRow = {};
+        newRow.groupId = row.groupId;
+        newRow.userId = row.userId;
         add(row).then(() => {
           loading();
           this.onLoad(this.page);

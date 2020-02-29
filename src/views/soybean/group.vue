@@ -120,6 +120,8 @@
               label: "群组人数",
               prop: "userAccount",
               type: "number",
+              editDisplay: false,
+              addDisplay: false,
               rules: [{
                 required: true,
                 message: "请输入群人数",
@@ -149,7 +151,6 @@
               hide: true,
               dataType: "string",
               dicUrl: "/api/bid-soybean/group/select",
-              // dicData: [],
               props: {
                 label: "name",
                 value: "id"
@@ -330,7 +331,16 @@
     },
     methods: {
       rowSave(row, loading, done) {
-        add(row).then(() => {
+        let newRow = {};
+        newRow.name = row.name;
+        newRow.fullName = row.fullName;
+        newRow.groupType = row.groupType;
+        newRow.createUser = row.createUser;
+        newRow.parentGroups = row.parentGroups;
+        newRow.managers = row.managers;
+        newRow.logo = row.logo;
+        newRow.remarks = row.remarks;
+        add(newRow).then(() => {
           loading();
           this.onLoad(this.page);
           this.$message({
@@ -343,9 +353,19 @@
         });
       },
       rowUpdate(row, index, loading, done) {
-        update(row).then(() => {
+        let newRow = {};
+        newRow.id = row.id;
+        newRow.name = row.name;
+        newRow.fullName = row.fullName;
+        newRow.groupType = row.groupType;
+        newRow.createUser = row.createUser;
+        newRow.parentGroups = row.parentGroups;
+        newRow.managers = row.managers;
+        newRow.logo = row.logo;
+        newRow.remarks = row.remarks;
+        update(newRow).then(() => {
           loading();
-          this.onLoad(this.page);
+          this.onLoad();
           this.$message({
             type: "success",
             message: "操作成功!"
@@ -386,7 +406,7 @@
             return remove(this.ids);
           })
           .then(() => {
-            this.onLoad(this.page);
+            this.onLoad();
             this.$message({
               type: "success",
               message: "操作成功!"
