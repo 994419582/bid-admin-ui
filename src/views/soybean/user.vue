@@ -73,7 +73,7 @@
             },
             {
               label: "微信昵称",
-              prop: "nickname",
+              prop: "nickName",
               editDisplay: false,
               rules: [{
                 required: true,
