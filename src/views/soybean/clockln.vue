@@ -92,21 +92,7 @@
                 trigger: "blur"
               }]
             },
-            {
-              label: "未返京原因",
-              prop: "nobackreason",
-              type: 'select',
-              dicUrl: "/api/bid-system/dict/dictionary?code=nobackreason",
-              props: {
-                label: "dictValue",
-                value: "dictKey"
-              },
-              rules: [{
-                required: false,
-                message: "请选择未返京原因",
-                trigger: "blur"
-              }]
-            },
+            
             {
               label: "健康状态",
               prop: "healthy",
@@ -140,21 +126,21 @@
                 trigger: "blur"
               }]
             },
-            {
-              label: "是否入院",
-              prop: "hospital",
-              type: 'select',
-              dicUrl: "/api/bid-system/dict/dictionary?code=hospital",
-              props: {
-                label: "dictValue",
-                value: "dictKey"
-              },
-              rules: [{
-                required: true,
-                message: "请选择是否有就诊入院",
-                trigger: "blur"
-              }]
-            },
+            // {
+            //   label: "是否入院",
+            //   prop: "hospital",
+            //   type: 'select',
+            //   dicUrl: "/api/bid-system/dict/dictionary?code=hospital",
+            //   props: {
+            //     label: "dictValue",
+            //     value: "dictKey"
+            //   },
+            //   rules: [{
+            //     required: true,
+            //     message: "请选择是否有就诊入院",
+            //     trigger: "blur"
+            //   }]
+            // },
             {
               label: "是否确诊",
               prop: "comfirmed",
@@ -186,6 +172,21 @@
               }]
             },
             {
+              label: "是否武汉",
+              prop: "wuhan",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=wuhan",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: true,
+                message: "请输入是否接触过武汉人或经过武汉",
+                trigger: "blur"
+              }]
+            },
+            {
               label: "是否离京",
               prop: "leave",
               type: 'radio',
@@ -211,21 +212,7 @@
                 trigger: "blur"
               }]
             },
-            {
-              label: "是否武汉",
-              prop: "wuhan",
-              type: 'radio',
-              dicUrl: "/api/bid-system/dict/dictionary?code=wuhan",
-              props: {
-                label: "dictValue",
-                value: "dictKey"
-              },
-              rules: [{
-                required: true,
-                message: "请输入是否接触过武汉人或经过武汉",
-                trigger: "blur"
-              }]
-            },
+            
             {
               label: "返京时间",
               prop: "gobacktime",
@@ -234,6 +221,36 @@
               rules: [{
                 required: false,
                 message: "请输入返京时间或计划返京时间",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "未返京原因",
+              prop: "nobackreason",
+              type: 'select',
+              dicUrl: "/api/bid-system/dict/dictionary?code=nobackreason",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: false,
+                message: "请选择未返京原因",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "交通方式",
+              prop: "transport",
+              type: 'select',
+              dicUrl: "/api/bid-system/dict/dictionary?code=transport",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: true,
+                message: "请输入交通方式",
                 trigger: "blur"
               }]
             },
@@ -247,50 +264,21 @@
               }]
             },
             {
-              label: "是否隔离",
-              prop: "quarantine",
-              type: 'radio',
-              dicUrl: "/api/bid-system/dict/dictionary?code=quarantine",
+              label: "在岗状态",
+              prop: "jobstatus",
+              type: 'select',
+              dicUrl: "/api/bid-system/dict/dictionary?code=jobstatus",
               props: {
                 label: "dictValue",
                 value: "dictKey"
               },
               rules: [{
                 required: true,
-                message: "请输入是否在隔离期",
+                message: "请输入在岗状态",
                 trigger: "blur"
               }]
             },
-            {
-              label: "是否在北京",
-              prop: "beijing",
-              type: 'radio',
-              dicUrl: "/api/bid-system/dict/dictionary?code=hbbj",
-              props: {
-                label: "dictValue",
-                value: "dictKey"
-              },
-              rules: [{
-                required: true,
-                message: "请输入是否在北京",
-                trigger: "blur"
-              }]
-            },
-            {
-              label: "是否经过湖北",
-              prop: "hubei",
-              type: 'radio',
-              dicUrl: "/api/bid-system/dict/dictionary?code=hbbj",
-              props: {
-                label: "dictValue",
-                value: "dictKey"
-              },
-              rules: [{
-                required: true,
-                message: "请输入是否经过湖北",
-                trigger: "blur"
-              }]
-            },
+            
             // {
             //   label: "未返京原因",
             //   prop: "reason",
@@ -317,6 +305,51 @@
               addDisplay: false,
               editDisplay: false,
               viewDisplay: false
+            },
+            {
+              label: "是否隔离",
+              prop: "quarantine",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=quarantine",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: false,
+                message: "请输入是否在隔离期",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "是否在北京",
+              prop: "beijing",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=hbbj",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: false,
+                message: "请输入是否在北京",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "是否经过湖北",
+              prop: "hubei",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=hbbj",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: false,
+                message: "请输入是否经过湖北",
+                trigger: "blur"
+              }]
             },
           ]
         },
