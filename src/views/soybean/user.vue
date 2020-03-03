@@ -84,6 +84,7 @@
             {
               label: "姓名",
               prop: "name",
+              search: true,
               rules: [{
                 required: true,
                 message: "请输入姓名",
@@ -93,6 +94,7 @@
             {
               label: "联系电话",
               prop: "phone",
+              search: true,
               rules: [{required: true, validator: validatePhone, trigger: 'blur'}]
             },
             {
