@@ -70,6 +70,7 @@
               label: "用户",
               prop: "userId",
               type: 'select',
+              search: true,
               remote: true,
               props: {
                 label: "name",
@@ -217,6 +218,7 @@
               label: "返京时间",
               prop: "gobacktime",
               type: "date",
+              search: true,
               format: "yyyy-MM-dd",
               rules: [{
                 required: false,
@@ -301,6 +303,7 @@
             {
               label: "打卡时间",
               prop: "createTime",
+              search: true,
               format: "yyyy-MM-dd hh:mm:ss",
               addDisplay: false,
               editDisplay: false,
