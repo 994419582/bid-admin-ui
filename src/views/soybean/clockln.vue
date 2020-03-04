@@ -83,16 +83,7 @@
                 trigger: "blur"
               }]
             },
-            {
-              label: "打卡地址",
-              prop: "address",
-              type: "textarea",
-              rules: [{
-                required: true,
-                message: "请输入打卡地址",
-                trigger: "blur"
-              }]
-            },
+            
             
             {
               label: "健康状态",
@@ -158,7 +149,7 @@
               }]
             },
             {
-              label: "是否就诊入院",
+              label: "是否入院",
               prop: "admitting",
               type: 'radio',
               dicUrl: "/api/bid-system/dict/dictionary?code=yes_no",
@@ -218,7 +209,6 @@
               label: "返京时间",
               prop: "gobacktime",
               type: "date",
-              search: true,
               format: "yyyy-MM-dd",
               rules: [{
                 required: false,
@@ -227,7 +217,7 @@
               }]
             },
             {
-              label: "未返京原因",
+              label: "未返原因",
               prop: "nobackreason",
               type: 'select',
               dicUrl: "/api/bid-system/dict/dictionary?code=nobackreason",
@@ -257,7 +247,7 @@
               }]
             },
             {
-              label: "返京航班/车次",
+              label: "返京车次",
               prop: "flight",
               rules: [{
                 required: false,
@@ -290,6 +280,17 @@
             //     trigger: "blur"
             //   }]
             // },
+
+            {
+              label: "打卡地址",
+              prop: "address",
+              type: "textarea",
+              rules: [{
+                required: true,
+                message: "请输入打卡地址",
+                trigger: "blur"
+              }]
+            },
             {
               label: "备注",
               prop: "remarks",
@@ -303,7 +304,6 @@
             {
               label: "打卡时间",
               prop: "createTime",
-              search: true,
               format: "yyyy-MM-dd hh:mm:ss",
               addDisplay: false,
               editDisplay: false,
@@ -313,6 +313,9 @@
               label: "是否隔离",
               prop: "quarantine",
               type: 'radio',
+              addDisplay: false,
+              editDisplay: false,
+              viewDisplay: false,
               dicUrl: "/api/bid-system/dict/dictionary?code=quarantine",
               props: {
                 label: "dictValue",
@@ -328,6 +331,9 @@
               label: "是否在北京",
               prop: "beijing",
               type: 'radio',
+              addDisplay: false,
+              editDisplay: false,
+              viewDisplay: false,
               dicUrl: "/api/bid-system/dict/dictionary?code=hbbj",
               props: {
                 label: "dictValue",
@@ -342,6 +348,9 @@
             {
               label: "是否经过湖北",
               prop: "hubei",
+              addDisplay: false,
+              editDisplay: false,
+              viewDisplay: false,
               type: 'radio',
               dicUrl: "/api/bid-system/dict/dictionary?code=hbbj",
               props: {
