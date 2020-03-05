@@ -270,6 +270,85 @@
                 trigger: "blur"
               }]
             },
+
+            {
+              label: "合租健康",
+              prop: "roomPerson",
+              type: 'select',
+              dicUrl: "/api/bid-system/dict/dictionary?code=roomPerson",
+              placeholder: "请选择 共同居住人员亲属（含合租人员）健康状况",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: true,
+                message: "请选择健康状态",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "其他症状",
+              prop: "roomPersonOther",
+              placeholder: "请输入 共同居住人员亲属（含合租人员）健康状况其他症状",
+              rules: [{
+                required: false,
+                message: "请输入健康状况其他情况",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "合租单位",
+              prop: "roomCompany",
+              type: 'select',
+              dicUrl: "/api/bid-system/dict/dictionary?code=roomCompany",
+              placeholder: "请选择 共同居住人员亲属（含合租人员）所在单位/公司是否有疑似病例、确诊病例",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: true,
+                message: "请选择健康状态",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "其他",
+              prop: "roomCompanyOther",
+              placeholder: "请输入 共同居住人员亲属（含合租人员）所在单位/公司是否有疑似病例、确诊病例其他",
+              rules: [{
+                required: false,
+                message: "请输入健康状况其他情况",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "小区状态",
+              prop: "neighbor",
+              type: 'select',
+              dicUrl: "/api/bid-system/dict/dictionary?code=neighbor",
+              placeholder: "请选择 居住小区是否有疑似病例、确诊病例",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: true,
+                message: "请选择居住小区是否有疑似病例、确诊病例",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "其他",
+              prop: "neighborOther",
+              placeholder: "请输入 居住小区是否有疑似病例、确诊病例其他",
+              rules: [{
+                required: false,
+                message: "请输入健康状况其他情况",
+                trigger: "blur"
+              }]
+            },
             
             // {
             //   label: "未返京原因",
