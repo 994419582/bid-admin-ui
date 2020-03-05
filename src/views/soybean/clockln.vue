@@ -84,7 +84,15 @@
               }]
             },
             
-            
+            {
+              label: "体温",
+              prop: "temperature",
+              rules: [{
+                required: true,
+                message: "请输入体温",
+                trigger: "blur"
+              }]
+            },
             {
               label: "健康状态",
               prop: "healthy",
@@ -109,15 +117,7 @@
                 trigger: "blur"
               }]
             },
-            {
-              label: "体温",
-              prop: "temperature",
-              rules: [{
-                required: true,
-                message: "请输入体温",
-                trigger: "blur"
-              }]
-            },
+            
             // {
             //   label: "是否入院",
             //   prop: "hospital",
@@ -179,7 +179,7 @@
               }]
             },
             {
-              label: "是否离京",
+              label: "离开工作",
               prop: "leave",
               type: 'radio',
               dicUrl: "/api/bid-system/dict/dictionary?code=yes_no",
@@ -189,18 +189,38 @@
               },
               rules: [{
                 required: true,
-                message: "请输入是否离京",
+                message: "请输入14天内是否离开工作地",
                 trigger: "blur"
               }]
             },
             {
-              label: "离京时间",
+              label: "离开城市",
+              prop: "leaveCity",
+              type: 'radio',
+              dicUrl: "/api/bid-system/dict/dictionary?code=yes_no",
+              props: {
+                label: "dictValue",
+                value: "dictKey"
+              },
+              rules: [{
+                required: true,
+                message: "请输入14天内是否离开打卡城市",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "",
+              prop: "",
+              type: 'radio',
+            },
+            {
+              label: "到达时间",
               prop: "leavetime",
               type: "date",
               format: "yyyy-MM-dd",
               rules: [{
                 required: false,
-                message: "请输入离京时间",
+                message: "请输入到达时间",
                 trigger: "blur"
               }]
             },
