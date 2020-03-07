@@ -2,7 +2,7 @@ import request from '@/router/axios';
 
 export const getList = (current, size, params) => {
   return request({
-    url: '/api/bid-soybean/group/list',
+    url: '/api/bid-soybean/group/tree/children',
     method: 'get',
     params: {
       ...params,
@@ -12,22 +12,14 @@ export const getList = (current, size, params) => {
   })
 }
 
-export const getChildren = (id) => {
+export const getTree = (current, size, params) => {
   return request({
-    url: '/api/bid-soybean/group/children',
+    url: '/api/bid-soybean/group/tree/top',
     method: 'get',
     params: {
-      id,
-    }
-  })
-}
-
-export const getParentGroupDic = (id) => {
-  return request({
-    url: '/api/bid-soybean/group/select/noOneself',
-    method: 'get',
-    params: {
-      id,
+      ...params,
+      current,
+      size,
     }
   })
 }
@@ -53,7 +45,6 @@ export const remove = (ids) => {
 }
 
 export const add = (row) => {
-  // row = {...row, managers: row.managers.join(',')}
   return request({
     url: '/api/bid-soybean/group/submit',
     method: 'post',
@@ -62,30 +53,10 @@ export const add = (row) => {
 }
 
 export const update = (row) => {
-  // row = {...row, managers: row.managers.join(',')}
   return request({
     url: '/api/bid-soybean/group/submit',
     method: 'post',
     data: row
   })
 }
-
-export const treeData = () => {
-  // row = {...row, managers: row.managers.join(',')}
-  return request({
-    url: '/api/bid-soybean/group/tree/children',
-    method: 'get'
-  })
-}
-
-export const search = (name) => {
-  return request({
-    url: '/api/bid-soybean/group/search',
-    method: 'get',
-    params: {
-      name: name,
-    }
-  })
-}
-
 

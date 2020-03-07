@@ -1,68 +1,42 @@
 <template>
-  <el-container>
-    <el-aside width="300px">
-      <avue-tree :option="treeOption" :data="treeData" @node-click="nodeClick"></avue-tree>
-    </el-aside>
-    <el-main>
-      <avue-crud :option="option"
-                :table-loading="loading"
-                :data="data"
-                :permission="permissionList"
-                :before-open="beforeOpen"
-                v-model="form"
-                ref="crud"
-                @row-update="rowUpdate"
-                @row-save="rowSave"
-                @row-del="rowDel"
-                @search-change="searchChange"
-                @search-reset="searchReset"
-                @selection-change="selectionChange"
-                @current-change="currentChange"
-                @size-change="sizeChange"
-                @on-load="onLoad">
-        <template slot="menuLeft">
-          <el-button type="danger"
-                    size="small"
-                    icon="el-icon-delete"
-                    plain
-                    v-if="permission.group_delete"
-                    @click="handleDelete">删 除
-          </el-button>
-        </template>
-      </avue-crud>
-    </el-main>
-  </el-container>
+  <basic-container>
+    <avue-crud :option="option"
+               :table-loading="loading"
+               :data="data"
+               :page="page"
+               :permission="permissionList"
+               :before-open="beforeOpen"
+               v-model="form"
+               ref="crud"
+               @row-update="rowUpdate"
+               @row-save="rowSave"
+               @row-del="rowDel"
+               @search-change="searchChange"
+               @search-reset="searchReset"
+               @selection-change="selectionChange"
+               @current-change="currentChange"
+               @size-change="sizeChange"
+               @on-load="onLoad">
+      <template slot="menuLeft">
+        <el-button type="danger"
+                   size="small"
+                   icon="el-icon-delete"
+                   plain
+                   v-if="permission.group_delete"
+                   @click="handleDelete">删 除
+        </el-button>
+      </template>
+    </avue-crud>
+  </basic-container>
 </template>
 
 <script>
-  import {getDetail, add, update, remove, treeData, getChildren,search} from "@/api/soybean/group";
+  import {getList, getDetail, add, update, remove, getTree} from "@/api/soybean/group";
   import {mapGetters} from "vuex";
 
   export default {
     data() {
       return {
-        treeData:[],
-        treeOption:{
-          nodeKey:'id',
-          expandAll: false,
-          height: 550,
-          addBtn:false,
-          menu:false,
-          size:'small',
-          formOption:{
-            labelWidth:100,
-            column:[{
-                label:'自定义项',
-                prop:'test'
-            }],
-          },
-          props:{
-            labelText:'组织架构',
-            label:'name',
-            value:'id',
-            children:'children'
-          }
-        },
         form: {},
         query: {},
         loading: true,
@@ -72,10 +46,11 @@
           total: 0
         },
         selectionList: [],
-        parentGroupDic: [],
         option: {
           tip: false,
+          tree: true,
           border: true,
+          index: true,
           viewBtn: true,
           selection: true,
           column: [
@@ -83,7 +58,6 @@
               label: "群组名称",
               prop: "name",
               width: 200,
-              hide: false,
               rules: [{
                 required: true,
                 message: "请输入群组名",
@@ -93,8 +67,7 @@
             {
               label: "群组全称",
               prop: "fullName",
-              width: 300,
-              search:true,
+              hide: true,
               rules: [{
                 required: true,
                 message: "请输入群组名全称",
@@ -117,17 +90,50 @@
               }]
             },
             {
-              label: "群组人数",
-              prop: "userAccount",
-              type: "number",
-              editDisplay: false,
-              addDisplay: false,
+              label: "父群组",
+              prop: "parentId",
+              type: 'tree',
+              hide: true,
+              dataType: "string",
+              // dicUrl: "/api/bid-soybean/group/tree/children",
+              props: {
+                label: "name",
+                value: "id"
+              },
               rules: [{
                 required: true,
-                message: "请输入群人数",
+                message: "请输入父群组",
                 trigger: "blur"
               }]
             },
+            {
+              label: "排序",
+              prop: "sort",
+              type: "number",
+              rules: [{
+                required: true,
+                message: "请输入群组简介",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "群组简介",
+              prop: "remarks",
+              rules: [{
+                required: true,
+                message: "请输入群组简介",
+                trigger: "blur"
+              }]
+            },
+            // {
+            //   label: "LOGO",
+            //   prop: "logo",
+            //   rules: [{
+            //     required: false,
+            //     message: "请输入群LOGO",
+            //     trigger: "blur"
+            //   }]
+            // },
             {
               label: "群创建人",
               prop: "createUser",
@@ -144,26 +150,9 @@
               }]
             },
             {
-              label: "父群组",
-              prop: "parentGroups",
-              type: 'tree',
-              multiple: true,
-              hide: true,
-              dataType: "string",
-              dicUrl: "/api/bid-soybean/group/select",
-              props: {
-                label: "name",
-                value: "id"
-              },
-              rules: [{
-                required: true,
-                message: "请输入父群组",
-                trigger: "blur"
-              }]
-            },
-            {
               label: "群管理员",
               prop: "managers",
+              hide: true,
               type: 'tree',
               multiple: true,
               dataType: "string",
@@ -180,35 +169,70 @@
               }]
             },
             {
-              label: "群组Logo",
-              prop: "logo",
+              label: "数据管理员",
+              prop: "dataManagers",
+              hide: true,
+              type: 'tree',
+              multiple: true,
+              dataType: "string",
+              filterable: true,
+              dicUrl: "/api/bid-soybean/user/select?name={{key}}",
+              props: {
+                label: "name",
+                value: "id"
+              },
               rules: [{
                 required: false,
-                message: "请输入群logo",
+                message: "请输入群数据管理员",
                 trigger: "blur"
               }]
             },
-            // {
-            //   label: "群更新人",
-            //   prop: "updateUser",
-            //   type: 'select',
-            //   addDisplay: false,
-            //   editDisplay: false,
-            //   dicUrl: "/api/bid-soybean/user/select?name={{key}}",
-            //   props: {
-            //     label: "name",
-            //     value: "id"
-            //   },
-            //   rules: [{
-            //     required: false,
-            //     message: "请输入群创建人",
-            //     trigger: "blur"
-            //   }]
-            // },
+            {
+              label: "联系人",
+              prop: "contact",
+              rules: [{
+                required: false,
+                message: "请输入联系人",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "联系电话",
+              prop: "phone",
+              rules: [{
+                required: false,
+                message: "请输入联系电话",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "公司地址",
+              prop: "addressName",
+              rules: [{
+                required: false,
+                message: "请输入公司地址名称",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "群LOGO",
+              prop: "logo",
+              type: 'upload',
+              hide:true,
+              listType: 'picture-img',
+              propsHttp: {
+                name : 'name',
+                url : 'hash'
+              },
+              action: '/api/bid-blockchain/ipfs/uploadFile',
+              span: 12,
+              row: false,
+            },
             {
               label: "创建日期",
               prop: "createTime",
               width: 100,
+              hide: true,
               type: 'datetime',
               disabled: true,
               addDisplay: false,
@@ -224,6 +248,7 @@
             {
               label: "更新日期",
               prop: "updateTime",
+              hide: true,
               width: 100,
               type: 'datetime',
               disabled: true,
@@ -234,75 +259,6 @@
               rules: [{
                 required: false,
                 message: "请输入更新日期",
-                trigger: "blur"
-              }]
-            },
-            // {
-            //   label: "群状态",
-            //   prop: "status",
-            //   type: 'radio',
-            //   dicUrl: "/api/bid-system/dict/dictionary?code=status",
-            //   props: {
-            //     label: "dictValue",
-            //     value: "dictKey"
-            //   },
-            //   rules: [{
-            //     required: true,
-            //     message: "请输入状态",
-            //     trigger: "blur"
-            //   }]
-            // },
-            // {
-            //   label: "需要审批",
-            //   prop: "approval",
-            //   type: 'radio',
-            //   dicUrl: "/api/bid-system/dict/dictionary?code=approval",
-            //   props: {
-            //     label: "dictValue",
-            //     value: "dictKey"
-            //   },
-            //   rules: [{
-            //     required: true,
-            //     message: "请输入是否需要审批",
-            //     trigger: "blur"
-            //   }]
-            // },
-            // {
-            //   label: "公司地址ID",
-            //   prop: "addressId",
-            //   rules: [{
-            //     required: false,
-            //     message: "请输入公司地址ID（只有公司和社区需要）",
-            //     trigger: "blur"
-            //   }]
-            // },
-            // {
-            //   label: "公司地址",
-            //   prop: "addressName",
-            //   rules: [{
-            //     required: false,
-            //     message: "请输入公司地址名称",
-            //     trigger: "blur"
-            //   }]
-            // },
-            // {
-            //   label: "详细地址",s
-            //   prop: "detailAddress",
-            //   rules: [{
-            //     required: false,
-            //     message: "请输入详细地址",
-            //     trigger: "blur"
-            //   }]
-            // },
-            {
-              label: "备注",
-              prop: "remarks",
-              span: 24,
-              minRows: 3,
-              type: "textarea",
-              rules: [{
-                required: false,
-                message: "请输入备注",
                 trigger: "blur"
               }]
             },
@@ -332,14 +288,20 @@
     methods: {
       rowSave(row, loading, done) {
         let newRow = {};
+        newRow.id = row.id;
         newRow.name = row.name;
         newRow.fullName = row.fullName;
         newRow.groupType = row.groupType;
-        newRow.createUser = row.createUser;
-        newRow.parentGroups = row.parentGroups;
-        newRow.managers = row.managers;
         newRow.logo = row.logo;
+        newRow.sort = row.sort;
         newRow.remarks = row.remarks;
+        newRow.createUser = row.createUser;
+        newRow.parentId = row.parentId;
+        newRow.managers = row.managers;
+        newRow.dataManagers = row.dataManagers;
+        newRow.contact = row.contact;
+        newRow.phone = row.phone;
+        newRow.addressName = row.addressName;
         add(newRow).then(() => {
           loading();
           this.onLoad(this.page);
@@ -358,14 +320,19 @@
         newRow.name = row.name;
         newRow.fullName = row.fullName;
         newRow.groupType = row.groupType;
-        newRow.createUser = row.createUser;
-        newRow.parentGroups = row.parentGroups;
-        newRow.managers = row.managers;
         newRow.logo = row.logo;
+        newRow.sort = row.sort;
         newRow.remarks = row.remarks;
+        newRow.createUser = row.createUser;
+        newRow.parentId = row.parentId;
+        newRow.managers = row.managers;
+        newRow.dataManagers = row.dataManagers;
+        newRow.contact = row.contact;
+        newRow.phone = row.phone;
+        newRow.addressName = row.addressName;
         update(newRow).then(() => {
           loading();
-          this.onLoad();
+          this.onLoad(this.page);
           this.$message({
             type: "success",
             message: "操作成功!"
@@ -406,7 +373,7 @@
             return remove(this.ids);
           })
           .then(() => {
-            this.onLoad();
+            this.onLoad(this.page);
             this.$message({
               type: "success",
               message: "操作成功!"
@@ -419,13 +386,6 @@
           getDetail(this.form.id).then(res => {
             this.form = res.data.data;
           });
-          // getParentGroupDic(this.form.id).then(res =>{
-          //   const data = res.data.data;
-          //   console.log(this)
-          //   this.option.column[5].dicData = data
-          //   this.$set(this.option.column, 5, this.option.column[5])
-          //    console.log(this)
-          // });
         }
         done();
       },
@@ -435,11 +395,7 @@
       },
       searchChange(params) {
         this.query = params;
-        search(this.query.fullName).then(res =>{
-          const data = res.data.data;
-          this.data = data;
-          this.selectionClear();
-        })
+        this.onLoad(this.page, params);
       },
       selectionChange(list) {
         this.selectionList = list;
@@ -454,33 +410,17 @@
       sizeChange(pageSize){
         this.page.pageSize = pageSize;
       },
-      onLoad() {
+      onLoad(page, params = {}) {
         this.loading = true;
-        getChildren(1).then(res =>{
-          const data = res.data.data;
-          this.data = data;
-          this.selectionClear();
-        });
-        // getParentGroupDic(1).then(res =>{
-        //   const data = res.data.data;
-        //   this.option.column[5].dicData = data
-        //   this.$set(this.option.column, 5, this.option.column[5])
-        // });
-        treeData().then(res =>{
-          const data = res.data.data;
-          data.expanded = false;
-          this.treeData = data;
+        getList(page.currentPage, page.pageSize, Object.assign(params, this.query)).then(res => {
+          this.data = res.data.data;
+          getTree().then(res => {
+            const data = res.data.data;
+            const index = this.$refs.crud.findColumnIndex("parentId");
+            this.option.column[index].dicData = data;
+          })
           this.loading = false;
-        });
-      },
-      nodeClick(data){
-        this.loading = true;
-        getChildren(data.id).then(res =>{
-          const data = res.data.data;
-          console.log(data);
-          this.data = data;
           this.selectionClear();
-          this.loading = false;
         });
       }
     }

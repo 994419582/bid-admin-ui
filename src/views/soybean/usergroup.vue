@@ -33,7 +33,7 @@
 </template>
 
 <script>
-  import {getList, getDetail, add, update, remove, treeData,selectUser} from "@/api/soybean/usergroup";
+  import {getList, getDetail, add, update, remove, treeData,getTree} from "@/api/soybean/usergroup";
   import {mapGetters} from "vuex";
 
   export default {
@@ -96,7 +96,7 @@
               label: "群组名称",
               prop: "groupId",
               type: 'tree',
-              dicUrl: "/api/bid-soybean/group/select",
+              // dicUrl: "/api/bid-soybean/group/select",
               props: {
                 label: "name",
                 value: "id"
@@ -243,6 +243,11 @@
           this.treeData = data;
           this.loading = false;
         });
+        getTree().then(res => {
+          const data = res.data.data;
+          const index = this.$refs.crud.findColumnIndex("groupId");
+          this.option.column[index].dicData = data;
+        })
       },
       nodeClick(data){
         let params = {};

@@ -55,6 +55,18 @@ export const treeData = () => {
   })
 }
 
+export const getTree = (current, size, params) => {
+  return request({
+    url: '/api/bid-soybean/group/tree/top',
+    method: 'get',
+    params: {
+      ...params,
+      current,
+      size,
+    }
+  })
+}
+
 export const selectUser = (id) => {
   return request({
     url: '/api/bid-soybean/usergroup/selectUser',
