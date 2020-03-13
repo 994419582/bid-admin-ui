@@ -30,6 +30,9 @@
             plain>管理员设置
         </el-button> -->
       </template>
+      <template slot="menu" slot-scope="scope">
+        <el-button size="small" icon="el-icon-search" @click="clockIn(scope.row)" type="text">打卡统计</el-button>
+      </template>
     </avue-crud>
     <el-dialog title="管理员配置"
               :visible.sync="box"
@@ -52,7 +55,7 @@
 </template>
 
 <script>
-  import {getList, getDetail, add, update, remove, getTree} from "@/api/soybean/group";
+  import {getList, getDetail, add, update, remove, getTree,clockIn} from "@/api/soybean/group";
   import {mapGetters} from "vuex";
 
   export default {
@@ -99,7 +102,7 @@
               label: "机构名称",
               prop: "name",
               search: true,
-              width: 300,
+              width: 150,
               rules: [{
                 required: true,
                 message: "请输入机构名称",
@@ -178,6 +181,17 @@
             //     trigger: "blur"
             //   }]
             // },
+            {
+              label: "群组用户数",
+              prop: "userAccount",
+              hide: false,
+              display:false,
+              rules: [{
+                required: false,
+                message: "请输入联系人",
+                trigger: "blur"
+              }]
+            },
             {
               label: "机构创建人",
               prop: "createUser",
@@ -282,7 +296,7 @@
               type: 'datetime',
               disabled: true,
               addDisplay: false,
-              editDisplay: false,              
+              editDisplay: false,
               format: "yyyy-MM-dd",
               valueFormat: "datetime",
               rules: [{
@@ -359,6 +373,21 @@
           done();
           console.log(error);
         });
+      },
+      clockIn(row){
+        clockIn(row.id).then((result)=>{
+            if(result.status==200){
+              if(result.data.code == 200){
+                  var str="当前群组共有用户:"+row.userAccount+"人,其中今日已打卡:"+result.data.data.clockIn+"人,未打卡:"+result.data.data.unClockIn
+
+                alert(str)
+              }else{
+                alert("统计失败")
+              }
+          }else{
+            alert("统计失败")
+          }
+        })
       },
       rowUpdate(row, index, loading, done) {
         let newRow = {};
