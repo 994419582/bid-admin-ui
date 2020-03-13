@@ -95,7 +95,7 @@
         },
         selectionList: [],
         option: {
-          menuWidth: 265,
+          menuWidth: 340,
           tip: false,
           tree: true,
           border: true,
@@ -141,10 +141,11 @@
               }]
             },
             {
-              label: "机构类型",
+              label: "类型",
               prop: "groupType",
               search: true,
               type: 'select',
+              width: 65,
               dicUrl: "/api/bid-system/dict/dictionary?code=group_type",
               props: {
                 label: "dictValue",
@@ -203,21 +204,22 @@
             //     trigger: "blur"
             //   }]
             // },
+            // {
+            //   label: "群组用户数",
+            //   prop: "userAccount",
+            //   hide: false,
+            //   display:false,
+            //   rules: [{
+            //     required: false,
+            //     message: "请输入联系人",
+            //     trigger: "blur"
+            //   }]
+            // },
             {
-              label: "群组用户数",
-              prop: "userAccount",
-              hide: false,
-              display:false,
-              rules: [{
-                required: false,
-                message: "请输入联系人",
-                trigger: "blur"
-              }]
-            },
-            {
-              label: "机构创建人",
+              label: "创建人",
               prop: "createUser",
               type: 'tree',
+              width: 75,
               dicUrl: "/api/bid-soybean/user/select?name={{key}}",
               props: {
                 label: "name",
