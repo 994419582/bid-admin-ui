@@ -26,6 +26,10 @@
                    @click="handleDelete">删 除
         </el-button>
       </template>
+      <template slot-scope="{row}"
+                slot="eventType">
+        <el-tag>{{row.eventName}}</el-tag>
+      </template>
     </avue-crud>
   </basic-container>
 </template>
