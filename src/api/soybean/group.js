@@ -53,6 +53,16 @@ export const remove = (ids) => {
   })
 }
 
+export const clockIn = (id) => {
+  return request({
+    url: '/api/bid-soybean/group/census',
+    method: 'get',
+    params: {
+      groupId:id,
+    }
+  })
+}
+
 export const add = (row) => {
   return request({
     url: '/api/bid-soybean/group/submit',
