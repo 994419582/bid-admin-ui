@@ -24,23 +24,36 @@
                    v-if="permission.group_delete"
                    @click="handleDelete">删 除
         </el-button>
-        <!-- <el-button size="small"
-            icon="el-icon-add"
-            @click="handleManager"
-            plain>管理员设置
-        </el-button> -->
+      </template>
+      <template slot="menu" slot-scope="scope">
+        <el-button size="small" icon="el-icon-check" @click="handleManager(scope.row)" type="text">管理员设置</el-button>
       </template>
     </avue-crud>
     <el-dialog title="管理员配置"
               :visible.sync="box"
-              width="20%">
-      <el-tree :data="list"
-              show-checkbox
-              node-key="id"
-              ref="tree"
-              :default-checked-keys="defaultObj"
-              :props="props">
-      </el-tree>
+              >
+      <el-form :model="managerForm">
+        <el-form-item label="管理员" :label-width="formLabelWidth">
+          <el-select filterable style="width:600px" v-model="managerForm.managers" multiple placeholder="请选择">
+            <el-option
+              v-for="item in managerList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="数据管理员" :label-width="formLabelWidth">
+          <el-select filterable style="width:600px" v-model="managerForm.dataManagers" multiple placeholder="请选择">
+            <el-option
+              v-for="item in managerList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
       <span slot="footer"
             class="dialog-footer">
         <el-button @click="box = false">取 消</el-button>
@@ -52,15 +65,26 @@
 </template>
 
 <script>
-  import {getList, getDetail, add, update, remove, getTree} from "@/api/soybean/group";
+  import {getList, getDetail, add, update, remove, getTree, getUserDict,updateManager} from "@/api/soybean/group";
   import {mapGetters} from "vuex";
 
   export default {
     data() {
       return {
+        groupId: null,
         form: {},
-        list: [],
+        managerForm: {
+          managers: [],
+          dataManagers: [],
+        },
+        formLabelWidth: '120px',
+        managerList: [],
         box: false,
+        props: {
+          label: "name",
+          value: "id"
+        },
+        defaultObj: [],
         query: {},
         loading: true,
         page: {
@@ -70,6 +94,7 @@
         },
         selectionList: [],
         option: {
+          menuWidth: 265,
           tip: false,
           tree: true,
           border: true,
@@ -332,6 +357,16 @@
       }
     },
     methods: {
+      submit() {
+        updateManager(this.managerForm).then(() => {
+          this.box = false;
+          this.$message({
+            type: "success",
+            message: "操作成功!"
+          });
+          this.onLoad(this.page);
+        });
+      },
       rowSave(row, loading, done) {
         let newRow = {};
         newRow.id = row.id;
@@ -427,21 +462,27 @@
             this.$refs.crud.toggleSelection();
           });
       },
-      handleManager() {
-        if (this.selectionList.length !== 1) {
-          this.$message.warning("只能选择一条数据");
-          return;
-        }
-        this.defaultObj = [];
-        // grantTree()
-        //   .then(res => {
-        //     this.list = res.data.data;
-        //     return getRole(this.ids);
-        //   })
-        //   .then(res => {
-        //     this.defaultObj = res.data.data;
-        //     this.box = true;
-        //   });
+      handleManager(row) {
+        this.groupId = row.id;
+        this.managerForm.managers = [];
+        this.managerForm.dataManagers = [];
+        getUserDict()
+          .then(res => {
+            this.managerList = res.data.data;
+            return getDetail(row.id);
+          })
+          .then(res => {
+            this.managerForm.id = res.data.data.id;
+            const managers = res.data.data.managers;
+            if(managers != "" && managers != null){
+              this.managerForm.managers = managers.split(",").map(Number);
+            }
+            const dataManagers = res.data.data.dataManagers
+            if(dataManagers != "" && dataManagers != null){
+              this.managerForm.dataManagers = dataManagers.split(",").map(Number);
+            }
+            this.box = true;
+          });
       },
       beforeOpen(done, type) {
         if (["edit", "view"].includes(type)) {

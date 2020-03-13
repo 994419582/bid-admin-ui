@@ -34,6 +34,15 @@ export const getDetail = (id) => {
   })
 }
 
+export const getUserDict = () => {
+  return request({
+    url: '/api/bid-soybean/user/select?name=',
+    method: 'get',
+    params: {
+    }
+  })
+}
+
 export const remove = (ids) => {
   return request({
     url: '/api/bid-soybean/group/remove',
@@ -55,6 +64,14 @@ export const add = (row) => {
 export const update = (row) => {
   return request({
     url: '/api/bid-soybean/group/submit',
+    method: 'post',
+    data: row
+  })
+}
+
+export const updateManager = (row) => {
+  return request({
+    url: '/api/bid-soybean/group/updateManager',
     method: 'post',
     data: row
   })
