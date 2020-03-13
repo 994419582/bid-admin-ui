@@ -3,7 +3,6 @@
     <avue-crud :option="option"
                :table-loading="loading"
                :data="data"
-               :page="page"
                :permission="permissionList"
                :before-open="beforeOpen"
                v-model="form"
@@ -25,8 +24,30 @@
                    v-if="permission.group_delete"
                    @click="handleDelete">删 除
         </el-button>
+        <!-- <el-button size="small"
+            icon="el-icon-add"
+            @click="handleManager"
+            plain>管理员设置
+        </el-button> -->
       </template>
     </avue-crud>
+    <el-dialog title="管理员配置"
+              :visible.sync="box"
+              width="20%">
+      <el-tree :data="list"
+              show-checkbox
+              node-key="id"
+              ref="tree"
+              :default-checked-keys="defaultObj"
+              :props="props">
+      </el-tree>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="box = false">取 消</el-button>
+        <el-button type="primary"
+                  @click="submit">确 定</el-button>
+      </span>
+    </el-dialog>
   </basic-container>
 </template>
 
@@ -38,6 +59,8 @@
     data() {
       return {
         form: {},
+        list: [],
+        box: false,
         query: {},
         loading: true,
         page: {
@@ -55,28 +78,47 @@
           selection: true,
           column: [
             {
-              label: "群组名称",
-              prop: "name",
-              width: 200,
-              rules: [{
-                required: true,
-                message: "请输入群组名",
-                trigger: "blur"
-              }]
-            },
-            {
-              label: "群组全称",
-              prop: "fullName",
+              label: "一级机构名称",
+              prop: "topId",
               hide: true,
+              display: false,
+              type: 'select',
+              search: true,
+              dicUrl: "/api/bid-soybean/group/selectChildGroup?groupId=0",
+              props: {
+                label: "name",
+                value: "id"
+              },
               rules: [{
                 required: true,
-                message: "请输入群组名全称",
+                message: "请输入一级机构名称",
                 trigger: "blur"
               }]
             },
             {
-              label: "群组类型",
+              label: "机构名称",
+              prop: "name",
+              search: true,
+              width: 300,
+              rules: [{
+                required: true,
+                message: "请输入机构名称",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "机构全称",
+              prop: "fullName",
+              rules: [{
+                required: true,
+                message: "请输入机构全称",
+                trigger: "blur"
+              }]
+            },
+            {
+              label: "机构类型",
               prop: "groupType",
+              search: true,
               type: 'select',
               dicUrl: "/api/bid-system/dict/dictionary?code=group_type",
               props: {
@@ -85,7 +127,7 @@
               },
               rules: [{
                 required: true,
-                message: "请输入群组类型",
+                message: "请输入机构类型",
                 trigger: "blur"
               }]
             },
@@ -109,6 +151,7 @@
             {
               label: "排序",
               prop: "sort",
+              hide: true,
               type: "number",
               rules: [{
                 required: true,
@@ -117,11 +160,12 @@
               }]
             },
             {
-              label: "群组简介",
+              label: "机构简介",
               prop: "remarks",
+              hide: true,
               rules: [{
                 required: true,
-                message: "请输入群组简介",
+                message: "请输入机构简介",
                 trigger: "blur"
               }]
             },
@@ -135,7 +179,7 @@
             //   }]
             // },
             {
-              label: "群创建人",
+              label: "机构创建人",
               prop: "createUser",
               type: 'tree',
               dicUrl: "/api/bid-soybean/user/select?name={{key}}",
@@ -145,12 +189,12 @@
               },
               rules: [{
                 required: true,
-                message: "请输入群创建人",
+                message: "请输入机构创建人",
                 trigger: "blur"
               }]
             },
             {
-              label: "群管理员",
+              label: "机构管理员",
               prop: "managers",
               hide: true,
               type: 'tree',
@@ -164,12 +208,12 @@
               },
               rules: [{
                 required: false,
-                message: "请输入群管理员",
+                message: "请输入机构管理员",
                 trigger: "blur"
               }]
             },
             {
-              label: "数据管理员",
+              label: "统计管理员",
               prop: "dataManagers",
               hide: true,
               type: 'tree',
@@ -190,6 +234,7 @@
             {
               label: "联系人",
               prop: "contact",
+              hide: true,
               rules: [{
                 required: false,
                 message: "请输入联系人",
@@ -199,6 +244,7 @@
             {
               label: "联系电话",
               prop: "phone",
+              hide: true,
               rules: [{
                 required: false,
                 message: "请输入联系电话",
@@ -380,6 +426,22 @@
             });
             this.$refs.crud.toggleSelection();
           });
+      },
+      handleManager() {
+        if (this.selectionList.length !== 1) {
+          this.$message.warning("只能选择一条数据");
+          return;
+        }
+        this.defaultObj = [];
+        // grantTree()
+        //   .then(res => {
+        //     this.list = res.data.data;
+        //     return getRole(this.ids);
+        //   })
+        //   .then(res => {
+        //     this.defaultObj = res.data.data;
+        //     this.box = true;
+        //   });
       },
       beforeOpen(done, type) {
         if (["edit", "view"].includes(type)) {
